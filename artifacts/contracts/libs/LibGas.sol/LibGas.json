@@ -1,0 +1,68 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "LibGas",
+  "sourceName": "contracts/libs/LibGas.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint112",
+          "name": "amount",
+          "type": "uint112"
+        }
+      ],
+      "name": "GasDeposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint112",
+          "name": "amount",
+          "type": "uint112"
+        }
+      ],
+      "name": "GasThawing",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "trader",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint112",
+          "name": "amount",
+          "type": "uint112"
+        }
+      ],
+      "name": "GasWithdraw",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x610104610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c80638ccc2826146038575b600080fd5b606160048036036040811015604c57600080fd5b50803590602001356001600160a01b03166073565b60408051918252519081900360200190f35b6001600160a01b038116600090815260208390526040812060018101541580159060a05750438160010154105b1560c25754600160701b90046dffffffffffffffffffffffffffff16905060c8565b60009150505b9291505056fea264697066735822122036ddb079da52ded674cbab6634eb36f760b1fbe6d2af61e88de9e4474d13daa864736f6c63430007000033",
+  "deployedBytecode": "0x730000000000000000000000000000000000000000301460806040526004361060335760003560e01c80638ccc2826146038575b600080fd5b606160048036036040811015604c57600080fd5b50803590602001356001600160a01b03166073565b60408051918252519081900360200190f35b6001600160a01b038116600090815260208390526040812060018101541580159060a05750438160010154105b1560c25754600160701b90046dffffffffffffffffffffffffffff16905060c8565b60009150505b9291505056fea264697066735822122036ddb079da52ded674cbab6634eb36f760b1fbe6d2af61e88de9e4474d13daa864736f6c63430007000033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
