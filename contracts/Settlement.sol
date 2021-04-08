@@ -39,7 +39,7 @@ contract Settlement is GasTank {
         uint256 inBal;
         uint256 outBal;
         uint256 afterIn;
-        uint256 actualOut;
+        uint256 afterOut;
     }
 
     /**
@@ -47,12 +47,11 @@ contract Settlement is GasTank {
      */
     function fill(Types.Order memory order, IDexRouter router, bytes calldata data) public onlyRelay nonReentrant {
 
+        console.log("SETTLEMENT: incoming data", data.length);
+
         uint256 startGas = gasleft();
         //pre-trade condition checks
         BalTracking memory _tracker = _preCheck(order);
-
-        //pre-trade actions to setup trade/router
-        _preActions(order, router);
 
         //execute action
         (bool success, string memory failReason) = performFill(order, router, data);
@@ -115,8 +114,13 @@ contract Settlement is GasTank {
     }
 
     function performFill(Types.Order memory order, IDexRouter router, bytes calldata data) internal returns (bool success, string memory failReason) {
-        try router.fill{gas: gasleft().sub(OP_GAS)}(order, data) {
-            success = true;
+        //execute action. This is critical that we use our own internal call to actually
+        //perform swap inside trycatch. This way, transferred funds to script are 
+        //reverted if swap fails
+        try this._trySwap{
+            gas: gasleft().sub(OP_GAS)
+        }(order, router, data) returns (bool _success, string memory _failReason) {
+            return (_success, _failReason);
         } catch Error(string memory err) {
             success = false;
             failReason = err;
@@ -124,6 +128,16 @@ contract Settlement is GasTank {
             success = false;
             failReason = "Unknown fail reason";
         }
+    }
+
+    function _trySwap(Types.Order calldata order, IDexRouter router, bytes calldata data) external returns (bool success, string memory failReason) {
+        require(msg.sender == address(this), "Can only be called by settlement contract");
+        _preActions(order, router);
+        (bool s, string memory err) = router.fill(order, data);
+        if(!s) {
+            revert(err);
+        }
+        return (s, err);
     }
 
     function _postCheck(Types.Order memory order, BalTracking memory _tracking, bool success) internal view {
@@ -134,14 +148,17 @@ contract Settlement is GasTank {
             //have to revert if funds were not refunded in order to roll everything back.
             //in this case, the router is at fault, which is Dexible's fault and therefore 
             //Dexible relay address should eat the cost of failure
+            console.log("Input bal b4", _tracking.inBal);
+            console.log("Input bal after", _tracking.afterIn);
             require(_tracking.afterIn == _tracking.inBal, "failed trade action did not refund input funds");
         } else {
-            _tracking.actualOut = order.output.token.balanceOf(order.trader);
+            _tracking.afterOut = order.output.token.balanceOf(order.trader);
             //if the in/out amounts don't line up, then transfers weren't made properly in the
             //router.
 
-            require(_tracking.actualOut > _tracking.outBal, "Insufficient output produced");
-            require(_tracking.actualOut.sub(_tracking.outBal) >= order.output.amount, "Trade action did not transfer output tokens to trader");
+            console.log("Output token balance", _tracking.outBal);
+            console.log("Actual trade output", _tracking.afterOut);
+            require(_tracking.afterOut.sub(_tracking.outBal) >= order.output.amount, "Trade action did not transfer output tokens to trader");
             require(_tracking.afterIn < _tracking.inBal, "Input tokens not used!");
             require(_tracking.inBal.sub(_tracking.afterIn) <= order.input.amount, "Used too many input tokens");
             
@@ -172,11 +189,11 @@ contract Settlement is GasTank {
 
             _msgSender().transfer(gasFee);
             payable(LibStorage.getConfigStorage().devTeam).transfer(order.fee);
-        
+            console.log("Successful swap");
             emit SwapSuccess(order.trader,
                         _msgSender(),
                         _tracking.inBal.sub(_tracking.afterIn),
-                        _tracking.actualOut.sub(_tracking.outBal),
+                        _tracking.afterOut.sub(_tracking.outBal),
                         order.fee.add(order.dexFee),
                         gasFee);
         }

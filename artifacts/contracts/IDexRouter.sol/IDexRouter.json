@@ -23,6 +23,11 @@
               "type": "address"
             },
             {
+              "internalType": "enum Types.OrderType",
+              "name": "orderType",
+              "type": "uint8"
+            },
+            {
               "components": [
                 {
                   "internalType": "contract IERC20",

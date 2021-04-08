@@ -20,6 +20,12 @@ library Types {
         PENALIZED
     }
 
+
+    enum OrderType {
+        EXACT_IN,
+        EXACT_OUT
+    }
+
     struct Order {
 
         //fee offered (120+128 = 248)
@@ -30,6 +36,9 @@ library Types {
 
         //trader that owns the order
         address trader;
+
+        //the type of trade being made
+        OrderType orderType;
 
         //token being offered
         TokenAmount input;

@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./LibStorage.sol";
 import "../Types.sol";
 
+import "hardhat/console.sol";
+
 library LibGas {
     using SafeMath for uint256;
     using SafeMath for uint112;
@@ -29,7 +31,7 @@ library LibGas {
      */
     function availableForWithdraw(Types.GasBalances storage gs, address account) external view returns (uint256) {
         Types.Gas storage gas = gs.balances[account];
-        if(gas.thawingUntil > 0 && gas.thawingUntil < block.number) {
+        if(gas.thawingUntil > 0 && gas.thawingUntil <= block.number) {
             return gas.thawing;
         }
         return 0;
@@ -41,7 +43,10 @@ library LibGas {
     function availableForUse(Types.GasBalances storage gs, address account) internal view returns (uint256) {
         Types.Gas storage gas = gs.balances[account];
        
-        if(gas.thawingUntil > 0 && gas.thawingUntil < block.number) {
+        //console.log("Current block", block.number);
+        //console.log("Expired block", gas.thawingUntil);
+
+        if(gas.thawingUntil > 0 && gas.thawingUntil > block.number) {
             //we have some funds thawing, which are still usable up until its expiration block
             return gas.balance.add(gas.thawing);
         }
