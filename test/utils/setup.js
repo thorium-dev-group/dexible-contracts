@@ -56,10 +56,10 @@ const sushiswap = async function(props) {
             LibAccess: props.accLib.address
         }
     });
-    console.log("Deploying uniswap router script impl...");
+    console.log("Deploying sushiswap router script impl...");
     let impl = await Con.deploy();
     let r = await impl.deployTransaction.wait();
-    console.log("Uniswap router script impl gas used", r.gasUsed.toString());
+    console.log("Sushiswap router script impl gas used", r.gasUsed.toString());
     props.deployCosts.push(r.gasUsed);
 
     let init = impl.interface.encodeFunctionData("initialize(address,address)", [SUSHI_FACTORY, SUSHI_ROUTER]);
@@ -68,9 +68,36 @@ const sushiswap = async function(props) {
     r = await proxy.deployTransaction.wait();
     props.deployCosts.push(r.gasUsed);
     
-    props.uniswapScript = new ethers.Contract(proxy.address, impl.interface, props.owner);
+    props.sushiswapScript = new ethers.Contract(proxy.address, impl.interface, props.owner);
 
     console.log("Deployed sushiswap script");
+
+    return props;
+}
+
+
+const zrx = async function(props) {
+    console.log("----- Deploying Zrx Router ----");
+    const Con = await ethers.getContractFactory("ZrxRouter", {
+        libraries: {
+            LibAccess: props.accLib.address
+        }
+    });
+    console.log("Deploying zrx router script impl...");
+    let impl = await Con.deploy();
+    let r = await impl.deployTransaction.wait();
+    console.log("Zrx router script impl gas used", r.gasUsed.toString());
+    props.deployCosts.push(r.gasUsed);
+
+    let init = impl.interface.encodeFunctionData("initialize()", []);
+    const PROXY = await ethers.getContractFactory("TransparentUpgradeableProxy"); 
+    let proxy  = await PROXY.deploy(impl.address, props.proxyAdminContract.address, init);
+    r = await proxy.deployTransaction.wait();
+    props.deployCosts.push(r.gasUsed);
+    
+    props.zrxScript = new ethers.Contract(proxy.address, impl.interface, props.owner);
+
+    console.log("Deployed zrx script");
 
     return props;
 }
@@ -79,5 +106,6 @@ module.exports = {
     accounts,
     settlement,
     uniswap,
-    sushiswap
+    sushiswap,
+    zrx
 }

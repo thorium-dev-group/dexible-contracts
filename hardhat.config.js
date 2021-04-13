@@ -50,6 +50,14 @@ module.exports = {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_ID}`,
       accounts: [`0x${process.env.RINKEBY_OWNER}`, `0x${process.env.RINKEBY_PROXY_ADMIN}`]
     },
+    kovan: {
+      gas: 10000000000,
+      gasPrice: 2000000000,
+      allowUnlimitedContractSize: true,
+      timeout: 600000,
+      url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
+      accounts: [`0x${process.env.KOVAN_OWNER}`, `0x${process.env.KOVAN_PROXY_ADMIN}`]
+    },
     mainnet: {
       gas: 80000000000,
       gasPrice: 80000000000,

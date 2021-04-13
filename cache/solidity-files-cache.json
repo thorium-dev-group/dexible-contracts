@@ -538,8 +538,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Settlement.sol": {
-      "lastModificationDate": 1617883002657,
-      "contentHash": "98b420f9799890b68447f6893bbbb7a8",
+      "lastModificationDate": 1618335123933,
+      "contentHash": "a9f14afe68c5148363bd134442dcb20b",
       "sourceName": "contracts/Settlement.sol",
       "solcConfig": {
         "version": "0.7.0",
@@ -1105,8 +1105,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/routers/uniswap/UniswapDex.sol": {
-      "lastModificationDate": 1617882638032,
-      "contentHash": "0a0e28319f8366b1695f5b190f65de41",
+      "lastModificationDate": 1617955917786,
+      "contentHash": "759a0d147a4e620704bc87785edf3816",
       "sourceName": "contracts/routers/uniswap/UniswapDex.sol",
       "solcConfig": {
         "version": "0.7.0",
@@ -1204,6 +1204,55 @@
       ],
       "artifacts": [
         "SushiswapDex"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/routers/zrx/ZrxRouter.sol": {
+      "lastModificationDate": 1618336669567,
+      "contentHash": "8369d2d68ea86ad0a1111a6924666cd9",
+      "sourceName": "contracts/routers/zrx/ZrxRouter.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol",
+        "../../Types.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "../../IDexRouter.sol",
+        "../../BaseAccess.sol"
+      ],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "ZrxRouter"
       ]
     }
   }

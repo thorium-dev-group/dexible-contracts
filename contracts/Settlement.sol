@@ -47,8 +47,6 @@ contract Settlement is GasTank {
      */
     function fill(Types.Order memory order, IDexRouter router, bytes calldata data) public onlyRelay nonReentrant {
 
-        console.log("SETTLEMENT: incoming data", data.length);
-
         uint256 startGas = gasleft();
         //pre-trade condition checks
         BalTracking memory _tracker = _preCheck(order);
@@ -156,8 +154,8 @@ contract Settlement is GasTank {
             //if the in/out amounts don't line up, then transfers weren't made properly in the
             //router.
 
-            console.log("Output token balance", _tracking.outBal);
-            console.log("Actual trade output", _tracking.afterOut);
+            console.log("Trader token balance before swap", _tracking.outBal);
+            console.log("New trader balance", _tracking.afterOut);
             require(_tracking.afterOut.sub(_tracking.outBal) >= order.output.amount, "Trade action did not transfer output tokens to trader");
             require(_tracking.afterIn < _tracking.inBal, "Input tokens not used!");
             require(_tracking.inBal.sub(_tracking.afterIn) <= order.input.amount, "Used too many input tokens");

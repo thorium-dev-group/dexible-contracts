@@ -38,7 +38,7 @@ contract UniswapDex is BaseAccess, IDexRouter{
         address[] memory path = abi.decode(data, (address[]));
         verifyRouterAllowance(order.input.token, order.input.amount);
         if(order.orderType == Types.OrderType.EXACT_IN) {
-            console.log("Expecting output amount", order.output.amount);
+            //console.log("Expecting output amount", order.output.amount);
 
             try router.swapExactTokensForTokens{
                 gas: gasleft()
@@ -52,7 +52,7 @@ contract UniswapDex is BaseAccess, IDexRouter{
             {
                 success = true;
             } catch Error(string memory err) {
-                console.log("Problem in fill", err);
+                //console.log("Problem in fill", err);
                 success = false;
                 failReason = err;
             } catch {

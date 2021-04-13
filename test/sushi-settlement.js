@@ -3,7 +3,7 @@ const { expect, assert} = require("chai");
 const {accounts, settlement, sushiswap} = require("./utils/setup");
 const {approveRelay} = require("./utils/accounts");
 const {setupOrder} = require("./utils/order");
-const {reserves}  = require("./utils/uniswap");
+const {reserves}  = require("./utils/sushi");
 const {balanceOf} = require("./utils/erc20");
 const erc20ABI = require("./abi/ERC20ABI.json");
 
@@ -95,7 +95,7 @@ describe("SushiSettlement", function() {
             await requestWithdraw(gas);
             b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
             expect(b).to.eq(gas);
-            await expect(props.settlementContract.connect(props.relay).fill(order, props.uniswapScript.address, encodedPath, {
+            await expect(props.settlementContract.connect(props.relay).fill(order, props.sushiswapScript.address, encodedPath, {
                 gasPrice: GASPRICE
             })).to.emit(props.settlementContract, "SwapSuccess");
             b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
@@ -111,7 +111,7 @@ describe("SushiSettlement", function() {
 
             //simulate price increase by expecting more output than actually produced
             order.output.amount = ethers.utils.parseEther("1");
-            await expect(props.settlementContract.connect(props.relay).fill(order, props.uniswapScript.address, encodedPath, {
+            await expect(props.settlementContract.connect(props.relay).fill(order, props.sushiswapScript.address, encodedPath, {
                 gasPrice: GASPRICE
             })).to.emit(props.settlementContract, "SwapFailed");
             b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
