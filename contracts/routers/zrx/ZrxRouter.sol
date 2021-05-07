@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "../../IDexRouter.sol";
 import "../../BaseAccess.sol";
 
-// @dev The ZrxRouter is used by ClearingHouse to execute orders through 0x
+// @dev The ZrxRouter is used by settlement to execute orders through 0x
 contract ZrxRouter is BaseAccess, IDexRouter {
     using SafeMath for uint256;
     using SafeMath for uint112;
@@ -26,9 +26,10 @@ contract ZrxRouter is BaseAccess, IDexRouter {
     external override returns (bool success, string memory failReason) {
 
       //call data contains the target address and data to pass to it to execute
-      (address swapTarget, bytes memory data) = abi.decode(orderCallData, (address,bytes));
+      (address swapTarget, address allowanceTarget, bytes memory data) = abi.decode(orderCallData, (address,address,bytes));
       
       console.log("Going to swap target", swapTarget);
+      console.log("Approving allowance for", allowanceTarget);
 
       //Settlement transferred token input amount so we can swap
       uint256 balanceBefore = order.output.token.balanceOf(address(this));
@@ -36,10 +37,10 @@ contract ZrxRouter is BaseAccess, IDexRouter {
       console.log("Balance of input token b4", balanceBefore);
 
       //for protocols that require zero-first approvals
-      require(order.input.token.approve(swapTarget, 0));
+      require(order.input.token.approve(allowanceTarget, 0));
 
       //make sure 0x target has approval to spend this contract's tokens
-      require(order.input.token.approve(swapTarget, order.input.amount));
+      require(order.input.token.approve(allowanceTarget, order.input.amount));
 
       //execute the swap, forwarding any ETH fee if needed. The ETH fee was
       //transferred to this contract by Settlement if it was needed

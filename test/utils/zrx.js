@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const BASE_URL = "https://api.0x.org/swap/v1";
+//const BASE_URL = "https://api.0x.org/swap/v1";
+const BASE_URL = "https://kovan.api.0x.org/swap/v1";
 const QUOTE_URL = `${BASE_URL}/quote?`;
 
 const estimate = async function(props) {
@@ -22,6 +23,7 @@ const estimate = async function(props) {
 
     let data = r.data;
     return {
+        allowanceTarget: data.allowanceTarget,
         price: data.price,
         dexAddress: data.to,
         dexInput: data.data,

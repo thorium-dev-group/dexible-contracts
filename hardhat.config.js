@@ -40,7 +40,8 @@ module.exports = {
       allowUnlimitedContractSize: true,
       timeout: 1800000,
       forking: {
-        url: "https://mainnet.infura.io/v3/e0a0a746fae345089d1c9c9870a80bd2"
+        //url: "https://mainnet.infura.io/v3/e0a0a746fae345089d1c9c9870a80bd2"
+        url: "https://kovan.infura.io/v3/e0a0a746fae345089d1c9c9870a80bd2"
       }
     },
     rinkeby: {
@@ -52,7 +53,7 @@ module.exports = {
     },
     kovan: {
       gas: 10000000000,
-      gasPrice: 2000000000,
+      gasPrice: 3000000000,
       allowUnlimitedContractSize: true,
       timeout: 600000,
       url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,

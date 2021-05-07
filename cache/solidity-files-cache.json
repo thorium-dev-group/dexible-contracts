@@ -538,7 +538,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Settlement.sol": {
-      "lastModificationDate": 1618335123933,
+      "lastModificationDate": 1618336794692,
       "contentHash": "a9f14afe68c5148363bd134442dcb20b",
       "sourceName": "contracts/Settlement.sol",
       "solcConfig": {
@@ -1207,8 +1207,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/routers/zrx/ZrxRouter.sol": {
-      "lastModificationDate": 1618336669567,
-      "contentHash": "8369d2d68ea86ad0a1111a6924666cd9",
+      "lastModificationDate": 1620337879426,
+      "contentHash": "f71db3d52d93fbd625cc192bec831366",
       "sourceName": "contracts/routers/zrx/ZrxRouter.sol",
       "solcConfig": {
         "version": "0.7.0",
