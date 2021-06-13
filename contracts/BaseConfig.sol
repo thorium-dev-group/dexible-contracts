@@ -71,28 +71,28 @@ abstract contract BaseConfig is BaseAccess {
     /**
      * Set the dev team wallet/multi-sig address
      */
-    function setDevTeam( address team) external{
+    function setDevTeam( address team) external onlyAdmin {
         LibStorage.getConfigStorage().devTeam = team;
     }
 
     /**
      * Set the number of blocks to wait before thawed withdraws are allowed
      */
-    function setLockoutBlocks(uint8 blocks) external{
+    function setLockoutBlocks(uint8 blocks) external onlyAdmin {
         LibStorage.getConfigStorage().lockoutBlocks = blocks;
     }
 
     /**
      * Set the minimum fee for an order execution
      */
-    function setMinFee(uint128 fee) external{
+    function setMinFee(uint128 fee) external onlyAdmin {
         LibStorage.getConfigStorage().minFee = fee;
     }
 
     /**
      * Set the penalty assessed when a user removes tokens or gas tank funds
      */
-    function setPenaltyFee(uint128 fee) external{
+    function setPenaltyFee(uint128 fee) external onlyAdmin {
         LibStorage.getConfigStorage().penaltyFee = fee;
     }
 }

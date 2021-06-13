@@ -1,7 +1,7 @@
 
 
 const deployZrxRouter = async props => {
-   
+   /*
     console.log("Deploying new ZrxRouter version...");
     let libraries = {};
     let all = await props.deployments.all();
@@ -17,6 +17,7 @@ const deployZrxRouter = async props => {
     console.log("ZrxRouter impl gas used", r.gasUsed.toString());
     console.log("Deployed new ZrxRouter at", impl.address);
     return impl;
+    */
 }
 
 module.exports = async ({getUnnamedAccounts, deployments}) => {
@@ -43,12 +44,14 @@ module.exports = async ({getUnnamedAccounts, deployments}) => {
         deployments,
         deploy: deployments.deploy 
     });
+    if(impl) {
+        await deployments.execute("ProxyAdmin", 
+        {from: proxyOwner},
+        "upgrade",
+        //KOVAN:
+        "0x62967831b650DC2d145c6dC979c087C98Cb2F263",
+        impl.address);
+    }
     
-    await deployments.execute("ProxyAdmin", 
-            {from: proxyOwner},
-            "upgrade",
-            //KOVAN:
-            "0x62967831b650DC2d145c6dC979c087C98Cb2F263",
-            impl.address);
 
 }

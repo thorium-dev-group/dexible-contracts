@@ -1,6 +1,6 @@
 const ethers = require("ethers");
 
-const GASPRICE = ethers.utils.parseUnits("100", 9);
+const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const alreadyDeployed = async (name, props) => {
     let lib = await props.deployments.getOrNull(name);

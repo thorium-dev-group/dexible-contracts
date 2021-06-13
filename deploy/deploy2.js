@@ -1,11 +1,11 @@
 
 const ethers = require("ethers");
 
-const GASPRICE = ethers.utils.parseUnits("80", 9);
+const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const buildConfig = props => {
     let minFee = props.minFee || ethers.utils.parseEther(".0029");
-    let penalty = props.penalty || ethers.utils.parseEther(".012");
+    let penalty = props.penalty || ethers.utils.parseEther("0");
     
     return {
         devTeam: props.owner,

@@ -1,6 +1,6 @@
 
 const ethers = require("ethers");
-const GASPRICE = ethers.utils.parseUnits("2", 9);
+const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const deploySushisapper = async props => {
     if(await alreadyDeployed("ZrxRouter", props)) {

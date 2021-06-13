@@ -69,6 +69,8 @@ contract Settlement is GasTank {
 
     // @dev whether the trader has gas funds to support order at the given gas price
     function _hasFunds(Types.Order memory order, uint256 gasPrice) internal view returns (bool) {
+        require(order.fee >= LibStorage.getConfigStorage().minFee, "Order has insufficient fee");
+        
         uint256 gas = GAS_ESTIMATE.mul(gasPrice);
         uint256 total = gas.add(order.fee)
                            .add(order.dexFee)
