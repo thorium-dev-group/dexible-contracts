@@ -26,7 +26,7 @@ Smart contract repo
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Dexible Logo Screen Shot][product-screenshot]](https://github.com/BUIDLHub/dexible-contracts/blob/docs/screenshot.png)
+<img src="https://github.com/BUIDLHub/dexible-contracts/blob/docs/screenshot.png" alt="screenshot" width="500">
 
 **What we do.** <br/>
 We enable smart DeFi automation, provide detailed pre-trade and post-trade analysis, serve as a single interface for strategy execution and portfolio allocation, and give professionals detailed trade history reports.
