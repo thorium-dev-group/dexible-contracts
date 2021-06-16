@@ -69,6 +69,7 @@ LibGas is responsible for managing all interactions with a trader's "gas tank" b
 | `GasWithdraw` | This is emitted when a trader finally withdraws funds from their gas tank.                                                                                                             |                                                                                                 |
 
 <br/>
+<br/>
 
 ### LibGas Functions
 
@@ -99,6 +100,8 @@ LibAccess is a library that is extended by other contracts that makeup the Dexib
 | `hasRole`      | This function checks whether an address has a specific role. This is a public view-only function that merely looks up the role and address to see if it's recorded before.                                                                                                                            |
 |  `_revokeRole` | This function removes a specific role for an address. It's an internal function that can only be called by extending contracts. It is the extending contract's responsibility to make sure the caller has the correct admin role to revoke other roles.                                               |
 
+<br/>
+<br/>
 
 ## BaseAccess
 
@@ -120,6 +123,9 @@ This is a base contract that manages all the access control logic. It defines al
 | `_setupRole`   | This is called internally to setup roles. It is defined internally so that initialize functions can call to establish initial admin roles.                 |
 | `initAccess`   | Internal function to initialize access to admin initializing the contract.                                                                                 |
 
+<br/>
+<br/>
+
 ## BaseConfig
 
 This contract extends BaseAccess and controls access to configuration settings for the core contracts. It uses LibConfig to manipulate ConfigStorage settings.
@@ -140,6 +146,8 @@ This contract extends BaseAccess and controls access to configuration settings f
 | `setMinFee`        | Set the min fee for settlement orders. Only admins can call this function.                                          |
 | `setPenaltyFee`    | Set the trader penalty fee. Only admins can call this function.                                                     |
 
+<br/>
+<br/>
 
 ## GasTank
 
@@ -155,6 +163,9 @@ This contract manages logic around gas tank management. It relies on LibGas to m
 | `requestWithdrawGas`      | Allows a trader to request that a certain amount of their gas tank balance be made available for withdraw after a minimum block thaw period (currently configured as 4 blocks). |
 | `withdrawGas`             | Allows a trader to withdraw their gas funds after they've thawed for the minimum wait period.                                                                                   |
 | `deduct`                  | An internally called function to deduct funds from a trader's gas tank once settlement request has finished.                                                                    |
+
+<br/>
+<br/>
 
 ## DexRouter
 
@@ -174,6 +185,8 @@ A "router" in the Dexible context refers to a source of liquid through which to 
 | `SwapSuccess`     | This is emitted when a swap succeeds.                                                                                                                                                                                                                                 |
 *A Note About Gas Estimates*
 The settlement contract reimburses Dexible relay wallets based on an estimate of what the actual gas costs will be. In practice this varies depending on the tokens being traded. While we've tried to minimize estimate overages, it inevitably works out such that most transaction reimbursements are higher than actual gas costs. If there is a more accurate method of getting the actual gas costs in solidity, we will employ that method immediately. In the meantime, the Settlement contract uses estimates for how much gas costs will be and deducts those estimates from the trader's gas tank balance.
+
+<br/>
 
 ### Settlement Fills + Risks
 
@@ -195,6 +208,8 @@ This is the primary function to settle fill requests through Dexible. It can onl
 
 The fill function relies on a trycatch mechanism to catch problems that may occur due to slippage and still allows the txn to succeed so that relays are reimbursed regardless of trade outcome. Certain conditions, however, should be charged back to Dexible since the relay should have checked those conditions prior to sending the txn on-chain (token balance, spend allowance, and gas tank balance for example).
 
+<br/>
+
 #### Risks
 
 **Dexible-Owned Output Token**
@@ -207,6 +222,8 @@ If Dexible were to have a rogue employee that uses the infrastructure to submit 
 
 One way to prevent this is to ensure that all order details are signed at the time of submission and that signature be verified as part of every order fill request. This would have to be done internal to Dexible, however, since full order details are sensitive to traders and should not be disclosed publicly. A proof mechanism could be developed such that the Settlement contract can prove that the given settlement request is in fact part of a larger approval. More thought would be needed to mitigate this inherent risk of centralized automation systems.
 
+<br/>
+<br/>
 
 
 ### Settlement Functions

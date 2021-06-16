@@ -1,25 +1,17 @@
-# dexible-contracts
+# Dexible Smart Contracts
 Smart contract repo
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![GNU License][license-shield]][https://www.gnu.org/licenses/fdl-1.3.html]
-[![Twitter][twitter-shield]][https://twitter.com/DexibleApp]
-
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/BUIDLHub/dexible-contracts/tree/docs/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Dexible v2 Smart Contracts</h3>
 
   <p align="center">
-    Dexible is the EMS that Professional Traders need. These contracts automate swaps for the Dexible DeFi bot aggregator. Navigate to <a href="#contracts">contracts</a> to see documentation.
+    Dexible is the EMS that Professional Traders need. These contracts automate swaps for the Dexible DeFi bot aggregator. Navigate to <a href="https://github.com/BUIDLHub/dexible-contracts/tree/docs/contracts">contracts</a> to see documentation.
     <br />
     <a href="mailto:support@dexible.io"><strong>Email the team»</strong></a>
     <br />
@@ -34,13 +26,16 @@ Smart contract repo
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Dexible Logo Screen Shot][product-screenshot]](https://github.com/BUIDLHub/dexible-contracts/tree/docs/screenshot.png)
 
-**What we do.**
+**What we do.** <br/>
 We enable smart DeFi automation, provide detailed pre-trade and post-trade analysis, serve as a single interface for strategy execution and portfolio allocation, and give professionals detailed trade history reports.
 
-**How we do it.**
+**How we do it.** <br/>
 We created a robust infrastructure, programmatic API, trade settlement logic, execution parameters, and an intuitive app frontend.
+
+<br/>
+<br/>
 
 Dexible is the go-to execution engine for professionals trading across DEXes. We automate swaps with private and non-custodial large cap trades and orders in illiquid markets to ensure the best effective rate. 
 
@@ -62,14 +57,14 @@ Coming down the road are technical audits of the smart contracts.
 
 ### What We Stand For
 
-**Be the Face for Teams with Integrity.**
+**Be the Face for Teams with Integrity.** <br/>
 We believe our code will be in the digital fingerprint of complex financial operations and we believe that a team that puts integrity first should design these with good intentions.
 
-**Set Public Standards.** 
+**Set Public Standards.**  <br/>
 We believe in standardizing access to the programmatic execution layer through smarter integrations.
 
-**Make Traders' Lives more Fulfilling.** 
+**Make Traders' Lives more Fulfilling.** <br/>
 We believe that changing how fund managers strategize and execute will give traders peace of mind and help them to tackle more personally fulfilling tasks—whether that's improving their personal financial outcomes or investing in early stage.
 
-**Improve Holistic Innovation.** 
+**Improve Holistic Innovation.** <br/>
 We believe that if we can optimize fund managers’ time, they’d be able to research and invest in more long-term projects with deeper fundamental value, thus improving the publicly decentralized internet.
