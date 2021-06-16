@@ -35,7 +35,7 @@ We enable smart DeFi automation, provide detailed pre-trade and post-trade analy
 We created a robust infrastructure, programmatic API, trade settlement logic, execution parameters, and an intuitive app frontend.
 
 <br/>
-<br/>
+<hr/>
 
 Dexible is the go-to execution engine for professionals trading across DEXes. We automate swaps with private and non-custodial large cap trades and orders in illiquid markets to ensure the best effective rate. 
 
@@ -54,6 +54,8 @@ Our vision is to become the de facto EMS for DeFi that offers the most cutting-e
 * And generate reports for accounting & tax instantly.
 
 Coming down the road are technical audits of the smart contracts.
+<br/>
+<br/>
 
 ### What We Stand For
 
