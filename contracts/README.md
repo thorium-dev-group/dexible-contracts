@@ -16,11 +16,15 @@
   </ol>
 </details>
 
+<br/>
+<hr/>
+<br/>
+
 ## Types
 
 This library defines various types used in Settlement contracts and libraries.
 
-<br/><br/>
+<br/>
 
 ## LibStorage
 
@@ -153,6 +157,7 @@ This contract extends BaseAccess and controls access to configuration settings f
 
 This contract manages logic around gas tank management. It relies on LibGas to manipulate Gas Storage fields. It extends BaseConfig, and by proxy BaseAccess, for configuration and access control management.
 
+### GasTank Functions
 |                         |                                                                                                                                                                                 |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `availableGasForWithdraw` | Retrieves a trader's current gas tank amount that can be withdrawn. These are funds that should have waited the minimum thaw period and are now available for withdraw.         |
@@ -167,7 +172,7 @@ This contract manages logic around gas tank management. It relies on LibGas to m
 <br/>
 <br/>
 
-## DexRouter
+## IDexRouter
 
 A "router" in the Dexible context refers to a source of liquid through which to settle trades. Different router implementations will rely on different sources. For example, the ZrxRouter relies on the 0x Dex Aggregator while UniswapRouter relies on UniswapV2.
 
@@ -183,7 +188,11 @@ A "router" in the Dexible context refers to a source of liquid through which to 
 | `TraderPenalized` | Not currently used, but a future version may include trader penalties if traders front-run relays to remove token balances or spend allowances in order to prevent trades from succeeding.                                                                            |
 | `SwapFailed`      | This is emitted if a swap failed due to excessive slippage or other normal market conditions. Note that the transaction itself does not fail; rather, the trader is charged for gas (but not Dexible trading fees) but their swapped token balance remains unchanged. |
 | `SwapSuccess`     | This is emitted when a swap succeeds.                                                                                                                                                                                                                                 |
-*A Note About Gas Estimates*
+
+
+<br/>
+
+*A Note About Gas Estimates* <br/>
 The settlement contract reimburses Dexible relay wallets based on an estimate of what the actual gas costs will be. In practice this varies depending on the tokens being traded. While we've tried to minimize estimate overages, it inevitably works out such that most transaction reimbursements are higher than actual gas costs. If there is a more accurate method of getting the actual gas costs in solidity, we will employ that method immediately. In the meantime, the Settlement contract uses estimates for how much gas costs will be and deducts those estimates from the trader's gas tank balance.
 
 <br/>
@@ -212,12 +221,14 @@ The fill function relies on a trycatch mechanism to catch problems that may occu
 
 #### Risks
 
-**Dexible-Owned Output Token**
+**Dexible-Owned Output Token** <br/>
 Since trades are fully automated, and only Dexible relay wallets can request order fills, it is possible that Dexible could introduce a dummy token, with its own liquidity pool in Uniswap, and submit orders to swap a trader's approved input tokens for its own dummy token. While this would completely destroy Dexible's reputation and make the system completely pointless; it is something the community has concerns over.
 
 One possible mitigation is to introduce approval checks for both input and output tokens. This way, traders who are concerned can pay the additional fees to only allow trades into tokens they approve. This would prevent Dexible from swapping into unknown tokens without explicit approval from traders.
 
-**Rouge Dexible Orders**
+<hr/>
+
+**Rouge Dexible Orders** <br/>
 If Dexible were to have a rogue employee that uses the infrastructure to submit bad orders for trader addresses, the trader would end up owning assets that they did not approve. The above mitigation would limit the loss to only tokens they approve; however, it would still end up leaving the trader with trades they didn't expect at prices they probably didn't want.
 
 One way to prevent this is to ensure that all order details are signed at the time of submission and that signature be verified as part of every order fill request. This would have to be done internal to Dexible, however, since full order details are sensitive to traders and should not be disclosed publicly. A proof mechanism could be developed such that the Settlement contract can prove that the given settlement request is in fact part of a larger approval. More thought would be needed to mitigate this inherent risk of centralized automation systems.

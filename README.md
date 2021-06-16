@@ -5,7 +5,7 @@ Smart contract repo
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://github.com/BUIDLHub/dexible-contracts/tree/docs/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/BUIDLHub/dexible-contracts/blob/docs/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Dexible v2 Smart Contracts</h3>
@@ -26,7 +26,7 @@ Smart contract repo
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Dexible Logo Screen Shot][product-screenshot]](https://github.com/BUIDLHub/dexible-contracts/tree/docs/screenshot.png)
+[![Dexible Logo Screen Shot][product-screenshot]](https://github.com/BUIDLHub/dexible-contracts/blob/docs/screenshot.png)
 
 **What we do.** <br/>
 We enable smart DeFi automation, provide detailed pre-trade and post-trade analysis, serve as a single interface for strategy execution and portfolio allocation, and give professionals detailed trade history reports.
