@@ -15,9 +15,6 @@ library LibStorage {
     //keccak256("com.buidlhub.init.InitControls");
     bytes32 constant INIT_STORAGE_KEY = 0xd59dd79cfd4373c6c6547848d91fc2ea67c8aec9053f7028828216c5af1d4741;
 
-    //keccak256("com.buidlhub.gastank.GasStorage");
-    bytes32 constant GAS_STORAGE_KEY = 0x8c89fc81d9ea4103ca01a6b8674fdaec22ec47acad49dcba52ad9c3d556ea075;
-
     //============= STORAGE ACCESSORS ==========/
    
     function getConfigStorage() internal pure returns (Types.Config storage cs) {
@@ -31,9 +28,4 @@ library LibStorage {
     function getInitControls() internal pure returns (Types.InitControls storage ic) {
         assembly { ic.slot := INIT_STORAGE_KEY }
     }
-
-    function getGasStorage() internal pure returns (Types.GasBalances storage gs) {
-        assembly { gs.slot := GAS_STORAGE_KEY }
-    }
-
 }

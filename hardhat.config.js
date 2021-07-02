@@ -31,17 +31,17 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: "X4AAIDNTXZGRM52NNMWFKZ9CRIGJHAUAGS"
+    apiKey: process.env.ETHERSCAN_KEY
   },
   networks: {
     hardhat: {
       gas: 3000000,
+      gasLimit: 600000,
       blockGasLimit: 12000000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
       forking: {
-        //url: "https://mainnet.infura.io/v3/e0a0a746fae345089d1c9c9870a80bd2"
-        url: "https://kovan.infura.io/v3/e0a0a746fae345089d1c9c9870a80bd2"
+        url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`
       }
     },
     rinkeby: {
@@ -53,9 +53,9 @@ module.exports = {
     },
     kovan: {
       gas: 10000000000,
-      gasPrice: 3000000000,
+      gasPrice: 1000000000,
       allowUnlimitedContractSize: true,
-      timeout: 600000,
+      timeout: 6000000,
       url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
       accounts: [`0x${process.env.KOVAN_OWNER}`, `0x${process.env.KOVAN_PROXY_ADMIN}`]
     },

@@ -42,10 +42,9 @@ contract ZrxRouter is BaseAccess, IDexRouter {
       //make sure 0x target has approval to spend this contract's tokens
       require(order.input.token.approve(allowanceTarget, order.input.amount));
 
-      //execute the swap, forwarding any ETH fee if needed. The ETH fee was
-      //transferred to this contract by Settlement if it was needed
+      //execute the swap
       console.log("Swapping...");
-      (bool _success,) = swapTarget.call{value: order.dexFee, gas: gasleft()}(data);
+      (bool _success,) = swapTarget.call{gas: gasleft()}(data);
       
       if(!_success) {
         console.log("Failed to swap");

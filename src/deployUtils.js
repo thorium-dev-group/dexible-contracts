@@ -54,7 +54,7 @@ const setupSettlement = async props => {
     
     return deployAccess(props)
           .then(deployConfig)
-          .then(deployGas)
+          //.then(deployGas)
           .then(deploySettlement);
           
           return props;
@@ -66,7 +66,7 @@ const deploySettlement = async props => {
         libraries: {
             LibAccess: props.accLib.address,
             LibConfig: props.cfgLib.address,
-            LibGas: props.libGas.address
+            //LibGas: props.libGas.address
         }
     });
     console.log("Deploying settlement impl...");
@@ -94,13 +94,13 @@ const deploySettlement = async props => {
 
 const buildConfig = props => {
     let ethers = props.ethers;
-    let minFee = props.minFee || ethers.utils.parseEther(".0029");
-    let penalty = props.penalty || ethers.utils.parseEther(".012");
+    let minFee = props.minFee || 999; //means 10bps or 1-(999/1000)
+    let penalty = props.penalty || ethers.utils.parseEther("0");
     
     return {
         devTeam: props.ownerAddress,
-        minFee: props.minFee || minFee,
-        penaltyFee: props.penaltyFee || penalty,
+        minFee: minFee,
+        penaltyFee: penalty,
         lockoutBlocks: 4,
     }
 }
@@ -112,7 +112,7 @@ const configInitializer = async (props, impl) => {
 module.exports = {
     deployAccess,
     deployConfig,
-    deployGas,
+    //deployGas,
     deploySettlement,
     setupSettlement
 }

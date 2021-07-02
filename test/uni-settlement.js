@@ -90,6 +90,7 @@ describe("UniSettlement", function() {
             await ec20.connect(whale).approve(tester.address, order.input.amount);
         }
 
+        /*
         it("Should not allow fill w/out gas", async function() {
             await expect(
               props.settlementContract.connect(props.relay).fill(order, props.uniswapScript.address, encodedPath, {
@@ -97,9 +98,10 @@ describe("UniSettlement", function() {
                 })
             ).to.be.revertedWith("Insufficient gas tank funds");
         });
+        */
 
         it("Should not allow fill w/out approval", async function(){
-            await depositGas(ethers.utils.parseEther("1"));
+            //await depositGas(ethers.utils.parseEther("1"));
             await expect(
                 props.settlementContract.connect(props.relay).fill(order, props.uniswapScript.address, encodedPath, {
                     gasPrice: GASPRICE
@@ -107,6 +109,7 @@ describe("UniSettlement", function() {
             ).to.be.revertedWith("Insufficient spend allowance on input token");
         });
 
+        /*
         it("Should allow fill w/thawing funds", async function() {
             let gas = ethers.utils.parseEther("1");
             await depositGas(gas);
@@ -120,10 +123,11 @@ describe("UniSettlement", function() {
             b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
             expect(b).to.not.eq(gas);
         });
+        */
 
         it("Should handle slippage failures", async function(){
             let gas = ethers.utils.parseEther("1");
-            await depositGas(gas);
+            //await depositGas(gas);
             await approveSpend();
 
             let sBal = await balanceOf({owner: MATIC_WHALE, token: MATIC});
@@ -133,8 +137,8 @@ describe("UniSettlement", function() {
             await expect(props.settlementContract.connect(props.relay).fill(order, props.uniswapScript.address, encodedPath, {
                 gasPrice: GASPRICE
             })).to.emit(props.settlementContract, "SwapFailed");
-            b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
-            expect(b).to.not.eq(gas);
+            //b = await props.settlementContract.connect(props.trader).availableForUse(MATIC_WHALE);
+            //expect(b).to.not.eq(gas);
 
             let eBal = await balanceOf({owner: MATIC_WHALE, token: MATIC});
             expect(sBal).to.eq(eBal);

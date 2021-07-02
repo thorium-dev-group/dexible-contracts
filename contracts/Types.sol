@@ -28,12 +28,6 @@ library Types {
 
     struct Order {
 
-        //fee offered (120+128 = 248)
-        uint128 fee;
-
-        //the fee that needs to be paid to a target DEX in ETH
-        uint128 dexFee;
-
         //trader that owns the order
         address trader;
 
@@ -47,28 +41,12 @@ library Types {
         TokenAmount output;
     }
 
-    /**
-     * A trader's gas tank balance and any amount that's 
-     * thawing waiting for withdraw.
-     */
-    struct Gas {
-        //available balance used to pay for fees
-        uint112 balance;
-
-        //amount user is asking to withdraw after a that period expires
-        uint112 thawing;
-
-        //the block at which any thawing amount can be withdrawn
-        uint256 thawingUntil;
-    }
-
-
     //============== CONFIG STATE =============/
     struct Config {
         //dev team address (120b)
         address devTeam;
 
-        //min fee amount (128b, 248b chunk)
+        //bps fee expressed as a whole number relative to 1000 (999 means 10 bps or (1-.001)*1000) (128b, 248b chunk)
         uint128 minFee;
 
         //penalty a user faces for removing assets or 
@@ -90,10 +68,5 @@ library Types {
     struct InitControls {
         bool initialized;
         bool initializing;
-    }
-    
-    //=============== GAS TANK STATE =============/
-    struct GasBalances {
-        mapping(address => Gas) balances;
     }
 }

@@ -4,25 +4,26 @@ const axios = require('axios');
 const BASE_URL = "https://kovan.api.0x.org/swap/v1";
 const QUOTE_URL = `${BASE_URL}/quote?`;
 
+
 const estimate = async function(props) {
+
     let params = {
         buyToken: props.buyToken,
         sellToken: props.sellToken,
-        sellAmount: props.sellAmount
+        sellAmount: props.sellAmount,
+        feeRecipient: props.devTeam,
+        buyTokenPercentageFee: .001
     };
-    let qs = toQueryStr(params);
-
-    let url = `${QUOTE_URL}${qs}`;
-    let r = await axios.get(url);
+    
+    r = await runQuery(params);
     if(!r || !r.data) {
         console.log("Missing body in response");
         return null;
     }
 
-
-
     let data = r.data;
     return {
+        ...data,
         allowanceTarget: data.allowanceTarget,
         price: data.price,
         dexAddress: data.to,
@@ -34,6 +35,13 @@ const estimate = async function(props) {
     }
 }
 
+const runQuery = props => {
+    let qs = toQueryStr(props);
+
+    let url = `${QUOTE_URL}${qs}`;
+    return axios.get(url);
+    
+}
 
 const toQueryStr = obj => {
     let str = '';

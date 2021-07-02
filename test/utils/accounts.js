@@ -1,6 +1,7 @@
 
 const setupAccounts = async (props) => {
     let accounts = await ethers.getSigners();
+    
     let owner = accounts[0];
     let ownerAddress = await owner.getAddress();
     let trader = accounts[1];

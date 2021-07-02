@@ -8,16 +8,6 @@
         {
           "components": [
             {
-              "internalType": "uint128",
-              "name": "fee",
-              "type": "uint128"
-            },
-            {
-              "internalType": "uint128",
-              "name": "dexFee",
-              "type": "uint128"
-            },
-            {
               "internalType": "address",
               "name": "trader",
               "type": "address"
