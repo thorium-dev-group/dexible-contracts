@@ -11,7 +11,7 @@ Smart contract repo
   <h3 align="center">Dexible v2 Smart Contracts</h3>
 
   <p align="center">
-    Dexible is the EMS that Professional Traders need. These contracts automate swaps for the Dexible DeFi bot aggregator. Navigate to <a href="https://github.com/BUIDLHub/dexible-contracts/tree/docs/contracts">contracts</a> to see documentation.
+    Dexible is the EMS that Professional Traders need. These contracts automate swaps for the Dexible DeFi bot aggregator. Navigate to <a href="https://github.com/BUIDLHub/dexible-contracts/tree/master/contracts">contracts</a> to see documentation.
     <br />
     <a href="mailto:support@dexible.io"><strong>Email the team»</strong></a>
     <br />
