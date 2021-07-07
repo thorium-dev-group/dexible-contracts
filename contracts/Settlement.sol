@@ -46,7 +46,7 @@ contract Settlement is BaseConfig {
 
     //============== CONSTANTS ==============/
     //gas needed after action executes
-    uint256 constant OP_GAS = 80_000;
+    uint256 constant OP_GAS = 40_000;
 
     //for final transfers and events
     uint256 constant GAS_OVERHEAD = 20_000;
@@ -183,14 +183,21 @@ contract Settlement is BaseConfig {
                           uint startGas) internal {
         if(!success) {
             //tell trader it failed
+            console.log("Swap failed");
             emit SwapFailed(order.trader,failReason);
         } else {
             uint256 grossOut = _tracking.afterOut.sub(_tracking.outBal);
+            console.log("Gross out", grossOut);
             uint256 totalGasUsed = startGas.sub(gasleft()).add(GAS_OVERHEAD);
+            console.log("Total gas used", totalGasUsed);
             uint256 gasFee = totalGasUsed.mul(tx.gasprice);
+            console.log("Gas fee", gasFee);
+
             if(address(this).balance < gasFee) {
+                console.log("Cannot reimburse relay since do not have enough funds");
                 emit InsufficientGasFunds(_msgSender(), gasFee);
             } else {
+                console.log("Transfering gas fee to relay");
                 _msgSender().transfer(gasFee);
                 emit PaidGasFunds(_msgSender(), gasFee);
             }
@@ -199,6 +206,7 @@ contract Settlement is BaseConfig {
                         _msgSender(),
                         _tracking.inBal.sub(_tracking.afterIn),
                         grossOut); 
+            console.log("Finished swap");
         }
     }
 }
