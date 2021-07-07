@@ -4,7 +4,7 @@ const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const deploySushisapper = async props => {
     if(await alreadyDeployed("ZrxRouter", props)) {
-        console.log("SushisZrxRouterwapDex already deployed at", props.ZrxRouter.address);
+        console.log("ZrxRouterwapDex already deployed at", props.ZrxRouter.address);
         return props;
     }
     console.log("Deploying ZrxRouter...");

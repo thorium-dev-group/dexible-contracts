@@ -86,7 +86,7 @@ const zrx = async function(props) {
     console.log("Deploying zrx router script impl...");
     let impl = await Con.deploy();
     let r = await impl.deployTransaction.wait();
-    console.log("Zrx router script impl gas used", r.gasUsed.toString());
+    console.log("Zrx router script impl deployed to", impl.address, "gas used", r.gasUsed.toString());
     props.deployCosts.push(r.gasUsed);
 
     let init = impl.interface.encodeFunctionData("initialize()", []);
@@ -95,6 +95,7 @@ const zrx = async function(props) {
     r = await proxy.deployTransaction.wait();
     props.deployCosts.push(r.gasUsed);
     
+    console.log("ZrxProxy address", proxy.address);
     props.zrxScript = new ethers.Contract(proxy.address, impl.interface, props.owner);
 
     console.log("Deployed zrx script");
