@@ -1,7 +1,7 @@
 
 
 const deploySettlement = async props => {
-    
+    /*
      console.log("Deploying new Settlement version...");
      let libraries = {};
      let all = await props.deployments.all();
@@ -17,6 +17,7 @@ const deploySettlement = async props => {
      console.log("Settlement impl gas used", r.gasUsed.toString());
      console.log("Deployed new Settlement at", impl.address);
      return impl;   
+     */
  }
  
  module.exports = async ({getUnnamedAccounts, deployments}) => {

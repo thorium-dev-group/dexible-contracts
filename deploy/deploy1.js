@@ -1,6 +1,5 @@
 const ethers = require("ethers");
 
-const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const alreadyDeployed = async (name, props) => {
     let lib = await props.deployments.getOrNull(name);
@@ -20,7 +19,6 @@ const deployAccess = async props => {
     console.log("Deploying LibAccess...");
     let accLib = await props.deploy("LibAccess", {
         from: props.owner,
-        gasPrice: GASPRICE
     });
     let libR = await accLib.receipt || {gasUsed: "0"};
     if(!props.deployCosts) {
@@ -42,7 +40,6 @@ const deployConfig = async props => {
     console.log("Deploying LibConfig...");
     let cfgLib = await props.deploy("LibConfig", {
         from: props.owner,
-        gasPrice: GASPRICE
     });
     libR = await cfgLib.receipt;
     props.deployCosts.push(libR.gasUsed);
@@ -63,7 +60,6 @@ const deployGas = async props => {
     console.log("Deploying LibGas...");
     let libGas = await props.deploy("LibGas", {
         from: props.owner,
-        gasPrice: GASPRICE 
     });
     libR = await libGas.receipt;
     props.deployCosts.push(libR.gasUsed);
@@ -82,7 +78,6 @@ const printCost = props => {
                     return c.add(o);
                 },ethers.utils.parseEther("0"));
   console.log("Total Deploy Gas Used", totalGas.toString());
-  console.log("Cost:", asEth(totalGas.mul(GASPRICE)));
 }
 
 //deploy libraries
@@ -100,7 +95,6 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
     
     props = await deployAccess(props)
                     .then(deployConfig)
-                    .then(deployGas);
     printCost(props);
     
 }

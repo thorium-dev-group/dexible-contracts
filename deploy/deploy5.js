@@ -2,7 +2,7 @@
 const ethers = require("ethers");
 const GASPRICE = ethers.utils.parseUnits("35", 9);
 
-const deploySushisapper = async props => {
+const deployZrx = async props => {
     if(await alreadyDeployed("ZrxRouter", props)) {
         console.log("ZrxRouterwapDex already deployed at", props.ZrxRouter.address);
         return props;
@@ -52,7 +52,6 @@ const printCost = props => {
                     return c.add(o);
                 },ethers.utils.parseEther("0"));
   console.log("Total Deploy Gas Used", totalGas.toString());
-  console.log("Cost:", asEth(totalGas.mul(GASPRICE)));
 }
 
 
@@ -81,6 +80,6 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
         deployCosts: [],
         proxyAdminContract: proxy
     };
-    props = await deploySushisapper(props);
+    props = await deployZrx(props);
     printCost(props);
 }

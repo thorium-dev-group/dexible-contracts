@@ -1,7 +1,6 @@
 
 const ethers = require("ethers");
 
-const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const buildConfig = props => {
     let minFee = props.minFee || ethers.utils.parseEther(".0029");
@@ -35,7 +34,6 @@ const deploySettlement = async props => {
     });
     let impl = await props.deploy("Settlement", {
         from: props.owner,
-        gasPrice: GASPRICE,
         libraries
     });
     let r = await impl.receipt;
@@ -49,7 +47,6 @@ const deploySettlement = async props => {
     let proxy = await props.deploy("TransparentUpgradeableProxy", {
         log: true,
         from: props.owner,
-        gasPrice: GASPRICE,
         args
     });
     r = proxy.receipt;
@@ -70,7 +67,6 @@ const printCost = props => {
                     return c.add(o);
                 },ethers.utils.parseEther("0"));
   console.log("Total Deploy Gas Used", totalGas.toString());
-  console.log("Cost:", asEth(totalGas.mul(GASPRICE)));
 }
 
 

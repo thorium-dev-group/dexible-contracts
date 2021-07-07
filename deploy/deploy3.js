@@ -1,7 +1,6 @@
 
 const ethers = require("ethers");
 
-const GASPRICE = ethers.utils.parseUnits("35", 9);
 const UNI_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 const UNI_FACTORY = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 
@@ -19,7 +18,6 @@ const deployUniswapper = async props => {
     });
     let impl = await props.deploy("UniswapDex", {
         from: props.owner,
-        gasPrice: GASPRICE,
         libraries
     });
     let r = await impl.receipt;
@@ -35,7 +33,6 @@ const deployUniswapper = async props => {
     let proxy = await props.deploy("TransparentUpgradeableProxy", {
         log: true,
         from: props.owner,
-        gasPrice: GASPRICE,
         args
     });
     r = proxy.receipt;
@@ -57,7 +54,6 @@ const printCost = props => {
                     return c.add(o);
                 },ethers.utils.parseEther("0"));
   console.log("Total Deploy Gas Used", totalGas.toString());
-  console.log("Cost:", asEth(totalGas.mul(GASPRICE)));
 }
 
 
@@ -86,6 +82,6 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
         deployCosts: [],
         proxyAdminContract: proxy
     };
-    props = await deployUniswapper(props);
-    printCost(props);
+    //props = await deployUniswapper(props);
+    //printCost(props);
 }

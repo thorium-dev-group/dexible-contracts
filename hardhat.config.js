@@ -59,6 +59,14 @@ module.exports = {
       url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`,
       accounts: [`0x${process.env.KOVAN_OWNER}`, `0x${process.env.KOVAN_PROXY_ADMIN}`]
     },
+    ropsten: {
+      gas: 10000000000,
+      gasPrice: 2500000000,
+      allowUnlimitedContractSize: true,
+      timeout: 6000000,
+      url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
+      accounts: [`0x${process.env.ROPSTEN_OWNER}`, `0x${process.env.ROPSTEN_PROXY_ADMIN}`]
+    },
     mainnet: {
       gas: 80000000000,
       gasPrice: 20000000000,
