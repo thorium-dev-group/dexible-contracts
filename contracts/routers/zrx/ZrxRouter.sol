@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 import "hardhat/console.sol";
 import "../../Types.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "../../IDexRouter.sol";
 import "../../BaseAccess.sol";
@@ -14,6 +15,7 @@ contract ZrxRouter is BaseAccess, IDexRouter {
     using SafeMath for uint256;
     using SafeMath for uint112;
     using SafeMath for uint;
+    using SafeERC20 for IERC20;
 
     function initialize() public initializer {
       BaseAccess.initAccess();
@@ -27,7 +29,6 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       //call data contains the target address and data to pass to it to execute
       (address swapTarget, address allowanceTarget, bytes memory data) = abi.decode(orderCallData, (address,address,bytes));
-      
       console.log("Going to swap target", swapTarget);
       console.log("Approving allowance for", allowanceTarget);
 
@@ -43,9 +44,10 @@ contract ZrxRouter is BaseAccess, IDexRouter {
       require(order.input.token.approve(allowanceTarget, order.input.amount));
 
       //execute the swap
-      console.log("Swapping...");
+      console.log("Swapping with gasleft", gasleft());
       (bool _success,) = swapTarget.call{gas: gasleft()}(data);
-      
+      console.log("Gas after swap", gasleft());
+
       if(!_success) {
         console.log("Failed to swap");
         return (false, "SWAP_CALL_FAILED");
@@ -53,15 +55,16 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       //make sure we received tokens
       uint256 balanceAfter = order.output.token.balanceOf(address(this));
+      console.log("Balance after", balanceAfter);
       uint256 diff = balanceAfter.sub(balanceBefore);
       console.log("Balance received", diff);
+      console.log("Min required", order.output.amount);
 
       require(diff >= order.output.amount, "Insufficient output amount");
-      if(!order.output.token.transfer(order.trader, diff)) {
-        console.log("Could not transfer tokens to trader");
-        return (false, "Failed to transfer funds to trader");
-      }
-      return (true,"");
+      //SafeERC should revert on this call if there's a problem
+      order.output.token.safeTransferFrom(address(this), order.trader, diff);
+      console.log("Transfer to trader complete");
+      return (true, "");
   }
 
   // Payable fallback to allow this contract to receive protocol fee refunds.
