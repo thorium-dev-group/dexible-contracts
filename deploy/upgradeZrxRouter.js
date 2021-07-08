@@ -19,7 +19,6 @@ const deployZrxRouter = async props => {
     console.log("ZrxRouter deployed at block", r.blockNumber, "with hash", r.transactionHash, "status", r.status, "from address", r.from, " using", r.gasUsed.toString(), "gas");
     console.log("Deployed new ZrxRouter at", impl.address);
     return impl;
-    
     */
 }
 
@@ -49,10 +48,12 @@ module.exports = async ({getUnnamedAccounts, deployments}) => {
     });
     if(impl) {
        let txn = await deployments.execute("ProxyAdmin", 
-            {from: proxyOwner},
+            {from: proxyOwner },
             "upgrade",
+            //ROPSTEN:
+            "0x318805c04452f55D3dCEd07a37FC1F5144bd2972",
             //KOVAN:
-            "0x62967831b650DC2d145c6dC979c087C98Cb2F263",
+            //"0x62967831b650DC2d145c6dC979c087C98Cb2F263",
             //MAINNET
             //"0xA317959257362560C889bE3B3E4244731F55aDEa",
             impl.address);

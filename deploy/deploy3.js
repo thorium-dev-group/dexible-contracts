@@ -1,35 +1,36 @@
 
 const ethers = require("ethers");
+const GASPRICE = ethers.utils.parseUnits("35", 9);
 
-const UNI_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
-const UNI_FACTORY = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
-
-const deployUniswapper = async props => {
-    if(await alreadyDeployed("UniswapDex", props)) {
-        console.log("UniswapDex already deployed at", props.UniswapDex.address);
+const deployZrx = async props => {
+    /*
+    if(await alreadyDeployed("ZrxRouter", props)) {
+        console.log("ZrxRouterwapDex already deployed at", props.ZrxRouter.address);
         return props;
     }
-    console.log("Deploying UniswapDex...");
+    */
+
+    console.log("Deploying ZrxRouter...");
     let libraries = {};
     let all = await props.deployments.all();
     Object.keys(all).forEach(k => {
         let dep = all[k];
         libraries[k] = dep.address;
     });
-    let impl = await props.deploy("UniswapDex", {
+    let impl = await props.deploy("ZrxRouter", {
         from: props.owner,
         libraries
     });
     let r = await impl.receipt;
-    console.log("UniswapDex impl gas used", r.gasUsed.toString());
+    console.log("ZrxRouter impl gas used", r.gasUsed.toString());
     props.deployCosts.push(r.gasUsed);
 
     let interface = new ethers.utils.Interface(impl.abi);
-    let init = interface.encodeFunctionData("initialize(address,address)", [UNI_FACTORY, UNI_ROUTER]);
+    let init = interface.encodeFunctionData("initialize()", []);
     
     let args = [impl.address, props.proxyAdminContract.address, init]
-    console.log("Deployed UniswapDex impl at", impl.address);
-    console.log("Deploying UniswapDex proxy with args", args);
+    console.log("Deployed ZrxRouter impl at", impl.address);
+    console.log("Deploying ZrxRouter proxy with args", args);
     let proxy = await props.deploy("TransparentUpgradeableProxy", {
         log: true,
         from: props.owner,
@@ -37,10 +38,10 @@ const deployUniswapper = async props => {
     });
     r = proxy.receipt;
     props.deployCosts.push(r.gasUsed);
-    console.log("Deployed UniswapDex proxy at", proxy.address);
+    console.log("Deployed ZrxRouter proxy at", proxy.address);
 
-    props.uniswapperProxy = proxy;
-    props.uniswapper = impl;
+    props.zrxProx = proxy;
+    props.zrx = impl;
     return props;
 }
 
@@ -51,6 +52,9 @@ const asEth = v => {
 
 const printCost = props => {
   let totalGas = props.deployCosts.reduce((o, c)=>{
+      if(!o) {
+          return c;
+      }
                     return c.add(o);
                 },ethers.utils.parseEther("0"));
   console.log("Total Deploy Gas Used", totalGas.toString());
@@ -82,6 +86,6 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
         deployCosts: [],
         proxyAdminContract: proxy
     };
-    //props = await deployUniswapper(props);
-    //printCost(props);
+    props = await deployZrx(props);
+    printCost(props);
 }

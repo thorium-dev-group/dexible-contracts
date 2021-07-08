@@ -61,7 +61,7 @@ module.exports = {
     },
     ropsten: {
       gas: 10000000000,
-      gasPrice: 2500000000,
+      gasPrice: 5000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,

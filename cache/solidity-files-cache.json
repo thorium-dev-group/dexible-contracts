@@ -967,50 +967,6 @@
         "Context"
       ]
     },
-    "/Users/mdcoon/git/dexible-contracts/contracts/deployment/DeploymentAdmin.sol": {
-      "lastModificationDate": 1617733440429,
-      "contentHash": "1e9da36f643a535d286931cd39b1d0f8",
-      "sourceName": "contracts/deployment/DeploymentAdmin.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/proxy/ProxyAdmin.sol"
-      ],
-      "versionPragmas": [
-        "^0.7.0"
-      ],
-      "artifacts": [
-        "DeploymentAdmin"
-      ]
-    },
     "/Users/mdcoon/git/dexible-contracts/contracts/routers/uniswap/UniswapDex.sol": {
       "lastModificationDate": 1617955917786,
       "contentHash": "759a0d147a4e620704bc87785edf3816",
@@ -1114,8 +1070,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/routers/zrx/ZrxRouter.sol": {
-      "lastModificationDate": 1625528243191,
-      "contentHash": "b2b8b20ae9d54831301a6811edbaf668",
+      "lastModificationDate": 1625750024328,
+      "contentHash": "63a91f64843f1232db9601bf1464c747",
       "sourceName": "contracts/routers/zrx/ZrxRouter.sol",
       "solcConfig": {
         "version": "0.7.0",
@@ -1161,6 +1117,94 @@
       ],
       "artifacts": [
         "ZrxRouter"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/deployment/ZrxAdmin.sol": {
+      "lastModificationDate": 1625765838701,
+      "contentHash": "ffec26ee7bf9e5fb24b9d9a8c5b8290c",
+      "sourceName": "contracts/deployment/ZrxAdmin.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/proxy/ProxyAdmin.sol"
+      ],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "SettlementAdmin"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/deployment/SettlementAdmin.sol": {
+      "lastModificationDate": 1625765824417,
+      "contentHash": "ffec26ee7bf9e5fb24b9d9a8c5b8290c",
+      "sourceName": "contracts/deployment/SettlementAdmin.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/proxy/ProxyAdmin.sol"
+      ],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "SettlementAdmin"
       ]
     }
   }

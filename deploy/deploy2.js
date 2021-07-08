@@ -41,7 +41,7 @@ const deploySettlement = async props => {
     props.deployCosts.push(r.gasUsed);
     let interface = new ethers.utils.Interface(impl.abi);
     let init = await configInitializer(props, {interface});
-    let args = [impl.address, props.proxyAdminContract.address, init]
+    let args = [impl.address, props.settlementProxyAdminContract.address, init]
     console.log("Deployed settlement impl at", impl.address);
     console.log("Deploying settlement proxy with args", args);
     let proxy = await props.deploy("TransparentUpgradeableProxy", {
@@ -57,10 +57,6 @@ const deploySettlement = async props => {
     return props;
 }
 
-
-const asEth = v => {
-  return ethers.utils.formatEther(v);
-}
 
 const printCost = props => {
   let totalGas = props.deployCosts.reduce((o, c)=>{
@@ -93,7 +89,7 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
         deploy: deployments.deploy,
         owner,
         deployCosts: [],
-        proxyAdminContract: proxy
+        settlementProxyAdminContract: proxy
     };
     props = await deploySettlement(props);
     printCost(props);

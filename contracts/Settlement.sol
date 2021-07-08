@@ -85,7 +85,7 @@ contract Settlement is BaseConfig {
      * Team's ability to withdraw ETH balance from the contract.
      */
     function withdraw(uint amount) public onlyAdmin {
-        require(amount < address(this).balance, "Insufficient balance to make transfer");
+        require(amount <= address(this).balance, "Insufficient balance to make transfer");
         _msgSender().transfer(amount);
         emit WithdrewETH(_msgSender(), amount);
     }

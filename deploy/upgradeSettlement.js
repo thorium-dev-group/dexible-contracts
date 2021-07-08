@@ -49,7 +49,7 @@ const deploySettlement = async props => {
             {from: proxyOwner},
             "upgrade",
             //KOVAN:
-            "0x147bFD9cEffcd58A2B2594932963F52B16d528b1",
+            //"0x147bFD9cEffcd58A2B2594932963F52B16d528b1",
             //MAINNET:
             //"0xad84693a21E0a1dB73ae6c6e5aceb041A6C8B6b3",
             impl.address);

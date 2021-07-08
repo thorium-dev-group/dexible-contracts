@@ -62,7 +62,7 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       require(diff >= order.output.amount, "Insufficient output amount");
       //SafeERC should revert on this call if there's a problem
-      order.output.token.safeTransferFrom(address(this), order.trader, diff);
+      order.output.token.safeTransfer(order.trader, diff);
       console.log("Transfer to trader complete");
       return (true, "");
   }

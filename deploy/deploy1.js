@@ -49,30 +49,6 @@ const deployConfig = async props => {
     return props;
 }
 
-const deployGas = async props => {
-    
-    if(await alreadyDeployed("LibGas", props)) {
-        console.log("LibGas already deployed at", props.LibGas.address);
-        return props;
-    }
-    
-
-    console.log("Deploying LibGas...");
-    let libGas = await props.deploy("LibGas", {
-        from: props.owner,
-    });
-    libR = await libGas.receipt;
-    props.deployCosts.push(libR.gasUsed);
-    console.log("Deployoed gas lib at", libGas.address);
-    console.log("Gas library cost", libR.gasUsed.toString());
-    props.libGas = libGas;
-    return props;
-}
-
-const asEth = v => {
-  return ethers.utils.formatEther(v);
-}
-
 const printCost = props => {
   let totalGas = props.deployCosts.reduce((o, c)=>{
                     return c.add(o);
@@ -83,14 +59,12 @@ const printCost = props => {
 //deploy libraries
 module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getChainId}) => {
     let [owner] = await getUnnamedAccounts();
-    let proxy = await deployments.getOrNull("ProxyAdmin");
-
+    
     let props = {
         deployments,
         deploy: deployments.deploy,
         owner,
-        deployCosts: [],
-        proxyAdminContract: proxy
+        deployCosts: []
     };
     
     props = await deployAccess(props)
