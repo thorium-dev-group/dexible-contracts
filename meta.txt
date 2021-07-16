@@ -13,3 +13,9 @@ Ropsten:
             0x8101fc8cc739300f8a404aedac6958839a53c62b
             0x8129fc1c
         ]
+Kovan:
+    Settlement Impl: previous (7/9/2021): 0x087bed8ecFBB1e5AF76486D57457925D44256097, 
+                     latest (7/10/2021): 0xA2438f07eDf2E06eF7D9e9e8c1B01aDCe411053f
+    Settlement Proxy:
+    ZrxImpl: 0x7536bbE9d9ADBd7B7C87b6436ddA70489dDf2e8C
+    ZrxProxy: 0x42a698126d0A96a10E8215009bEd9cbD3a11b211

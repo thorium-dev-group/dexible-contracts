@@ -87,5 +87,5 @@ module.exports = async ({getNamedAccounts, getUnnamedAccounts, deployments, getC
         proxyAdminContract: proxy
     };
     props = await deployZrx(props);
-    printCost(props);
+    //printCost(props);
 }

@@ -38,7 +38,8 @@ contract Settlement is BaseConfig {
     event SwapSuccess(address indexed trader,
                        address indexed executor, 
                        uint inputAmount,
-                       uint outputAmount);
+                       uint outputAmount
+                       );
     event ReceivedETH(address indexed sender, uint amount);
     event WithdrewETH(address indexed receiver, uint amount);
     event PaidGasFunds(address indexed sender, uint amount);
@@ -181,6 +182,22 @@ contract Settlement is BaseConfig {
                           string memory failReason, 
                           BalTracking memory _tracking,
                           uint startGas) internal {
+
+        //reimburse relay estimated gas fees
+        uint256 totalGasUsed = startGas.sub(gasleft()).add(GAS_OVERHEAD);
+        console.log("Total gas used", totalGasUsed);
+        uint256 gasFee = totalGasUsed.mul(tx.gasprice);
+        console.log("Gas fee", gasFee);
+
+        if(address(this).balance < gasFee) {
+            console.log("Cannot reimburse relay since do not have enough funds");
+            emit InsufficientGasFunds(_msgSender(), gasFee);
+        } else {
+            console.log("Transfering gas fee to relay");
+            _msgSender().transfer(gasFee);
+            emit PaidGasFunds(_msgSender(), gasFee);
+        }
+        
         if(!success) {
             //tell trader it failed
             console.log("Swap failed");
@@ -188,20 +205,7 @@ contract Settlement is BaseConfig {
         } else {
             uint256 grossOut = _tracking.afterOut.sub(_tracking.outBal);
             console.log("Gross out", grossOut);
-            uint256 totalGasUsed = startGas.sub(gasleft()).add(GAS_OVERHEAD);
-            console.log("Total gas used", totalGasUsed);
-            uint256 gasFee = totalGasUsed.mul(tx.gasprice);
-            console.log("Gas fee", gasFee);
 
-            if(address(this).balance < gasFee) {
-                console.log("Cannot reimburse relay since do not have enough funds");
-                emit InsufficientGasFunds(_msgSender(), gasFee);
-            } else {
-                console.log("Transfering gas fee to relay");
-                _msgSender().transfer(gasFee);
-                emit PaidGasFunds(_msgSender(), gasFee);
-            }
-            
             emit SwapSuccess(order.trader,
                         _msgSender(),
                         _tracking.inBal.sub(_tracking.afterIn),

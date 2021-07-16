@@ -69,7 +69,7 @@ module.exports = {
     },
     mainnet: {
       gas: 80000000000,
-      gasPrice: 20000000000,
+      gasPrice: 28000000000,
       allowUnlimitedContractSize: true,
       timeout: 600000,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,

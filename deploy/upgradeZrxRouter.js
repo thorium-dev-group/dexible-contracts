@@ -20,6 +20,7 @@ const deployZrxRouter = async props => {
     console.log("Deployed new ZrxRouter at", impl.address);
     return impl;
     */
+    
 }
 
 module.exports = async ({getUnnamedAccounts, deployments}) => {
@@ -50,12 +51,10 @@ module.exports = async ({getUnnamedAccounts, deployments}) => {
        let txn = await deployments.execute("ProxyAdmin", 
             {from: proxyOwner },
             "upgrade",
-            //ROPSTEN:
-            "0x318805c04452f55D3dCEd07a37FC1F5144bd2972",
             //KOVAN:
-            //"0x62967831b650DC2d145c6dC979c087C98Cb2F263",
+            "0x62967831b650DC2d145c6dC979c087C98Cb2F263",
             //MAINNET
-            //"0xA317959257362560C889bE3B3E4244731F55aDEa",
+            //"0x2d57690EBA381611C77069fbcfC79D4806a4e53e",
             impl.address);
        console.log("Finished upgrading ZrxRouter with txn", txn);
     }
