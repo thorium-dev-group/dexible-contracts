@@ -29,13 +29,15 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       //call data contains the target address and data to pass to it to execute
       (address swapTarget, address allowanceTarget, bytes memory data) = abi.decode(orderCallData, (address,address,bytes));
+      console.log("------------- ZRX ROUTER --------------");
       console.log("Going to swap target", swapTarget);
       console.log("Approving allowance for", allowanceTarget);
+      console.log("Swapping input amount", order.input.amount);
 
       //Settlement transferred token input amount so we can swap
       uint256 balanceBefore = order.output.token.balanceOf(address(this));
     
-      console.log("Balance of input token b4", balanceBefore);
+      console.log("Balance of output token b4", balanceBefore);
 
       //for protocols that require zero-first approvals
       require(order.input.token.approve(allowanceTarget, 0));
@@ -50,6 +52,7 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       if(!_success) {
         console.log("Failed to swap");
+        console.log("---- END ZRX ROUTER ----");
         return (false, "SWAP_CALL_FAILED");
       }
 
@@ -62,8 +65,9 @@ contract ZrxRouter is BaseAccess, IDexRouter {
 
       require(diff >= order.output.amount, "Insufficient output amount");
       //SafeERC should revert on this call if there's a problem
-      order.output.token.safeTransfer(order.trader, diff);
-      console.log("Transfer to trader complete");
+      order.output.token.safeTransfer(_msgSender(), diff);
+      console.log("Transferred result to", _msgSender());
+      console.log("---- END ZRX ROUTER ----");
       return (true, "");
   }
 

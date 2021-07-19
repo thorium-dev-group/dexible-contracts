@@ -38,6 +38,12 @@ const setupAccounts = async (props) => {
 const approveRelay = async props => {
     let {relayAddress,owner, settlementContract}=props;
     console.log("Approving relay", relayAddress);
+    let gas = await settlementContract.connect(owner).estimateGas.addRole(settlementContract.RELAY_ROLE(), relayAddress);
+    console.log("Gas estimate", gas.toString());
+    let price = await props.ethers.provider.getGasPrice();
+    console.log("Gas price", price.toString());
+    let fee = await price.mul(gas);
+    console.log("Total fee", props.ethers.utils.formatEther(fee));
     await settlementContract.connect(owner).addRole(settlementContract.RELAY_ROLE(), relayAddress);
 }
 

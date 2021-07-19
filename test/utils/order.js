@@ -3,7 +3,9 @@ const setupOrder = (props) => {
     
     return {
         trader: props.traderAddress,
-        orderType: props.orderType || 0,
+        feeToken: props.feeToken,
+        feeTokenETHPrice: props.feeTokenETHPrice,
+        gasEstimate: props.gasEstimate,
         input: {
             token: props.tokenA.address,
             amount: props.tokenA.amount

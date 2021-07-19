@@ -13,9 +13,19 @@
               "type": "address"
             },
             {
-              "internalType": "enum Types.OrderType",
-              "name": "orderType",
-              "type": "uint8"
+              "internalType": "contract IERC20",
+              "name": "feeToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeTokenETHPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasEstimate",
+              "type": "uint256"
             },
             {
               "components": [

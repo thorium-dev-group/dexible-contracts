@@ -94,7 +94,7 @@ const deploySettlement = async props => {
 
 const buildConfig = props => {
     let ethers = props.ethers;
-    let minFee = props.minFee || 999; //means 10bps or 1-(999/1000)
+    let minFee = props.minFee || 10;
     let penalty = props.penalty || ethers.utils.parseEther("0");
     
     return {

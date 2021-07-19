@@ -1,18 +1,19 @@
 const axios = require('axios');
 
-//const BASE_URL = "https://api.0x.org/swap/v1";
-const BASE_URL = "https://kovan.api.0x.org/swap/v1";
-const QUOTE_URL = `${BASE_URL}/quote?`;
+const endpoints = {
+    1: "https://api.0x.org/swap/v1/quote?",
+    42: "https://kovan.api.0x.org/swap/v1/quote?"
+}
 
 
 const estimate = async function(props) {
 
     let params = {
+        baseUrl: endpoints[props.chainId],
         buyToken: props.buyToken,
         sellToken: props.sellToken,
         sellAmount: props.sellAmount,
-        feeRecipient: props.devTeam,
-        buyTokenPercentageFee: .001
+        slippagePercentage: props.slippage
     };
     
     r = await runQuery(params);
@@ -36,9 +37,13 @@ const estimate = async function(props) {
 }
 
 const runQuery = props => {
-    let qs = toQueryStr(props);
+    let qs = toQueryStr({
+        ...props,
+        baseUrl: undefined
+    });
 
-    let url = `${QUOTE_URL}${qs}`;
+    let url = `${props.baseUrl}${qs}`;
+    console.log("Calling 0x at", url);
     return axios.get(url);
     
 }
@@ -47,7 +52,11 @@ const toQueryStr = obj => {
     let str = '';
     let first = true;
     for(var p in obj) {
-        let v = encodeURIComponent(obj[p]);
+        let v = obj[p];
+        if(typeof v === 'undefined') {
+            continue;
+        }
+        v = encodeURIComponent(v);
         if(!first) {
             str += "&";
         }

@@ -35,13 +35,12 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      gas: 3000000,
-      gasLimit: 600000,
-      blockGasLimit: 12000000,
+      //gas: 30000000000,
+      //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
       forking: {
-        url: `https://kovan.infura.io/v3/${process.env.INFURA_ID}`
+        url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
       }
     },
     rinkeby: {

@@ -20,19 +20,19 @@ library Types {
         PENALIZED
     }
 
-
-    enum OrderType {
-        EXACT_IN,
-        EXACT_OUT
-    }
-
     struct Order {
 
         //trader that owns the order
         address trader;
 
-        //the type of trade being made
-        OrderType orderType;
+        //the token we are taking as fee
+        IERC20 feeToken;
+
+        //eth price of fee token in whole units
+        uint feeTokenETHPrice;
+
+        //an estimate of gas to use to fill the order
+        uint gasEstimate;
 
         //token being offered
         TokenAmount input;
@@ -46,7 +46,7 @@ library Types {
         //dev team address (120b)
         address devTeam;
 
-        //bps fee expressed as a whole number relative to 1000 (999 means 10 bps or (1-.001)*1000) (128b, 248b chunk)
+        //bps fee expressed as a whole number
         uint128 minFee;
 
         //penalty a user faces for removing assets or 
