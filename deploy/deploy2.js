@@ -3,7 +3,7 @@ const ethers = require("ethers");
 
 
 const buildConfig = props => {
-    let minFee = props.minFee || ethers.utils.parseEther(".0029");
+    let minFee = props.minFee || 10; //ethers.utils.parseEther(".0029");
     let penalty = props.penalty || ethers.utils.parseEther("0");
     
     return {

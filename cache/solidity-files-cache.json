@@ -180,6 +180,48 @@
         "Types"
       ]
     },
+    "/Users/mdcoon/git/dexible-contracts/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1626472936922,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
     "/Users/mdcoon/git/dexible-contracts/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
       "lastModificationDate": 1615404252575,
       "contentHash": "e0a41531d159d3a32f84b7a3ecf9fabb",
@@ -222,10 +264,10 @@
         "IERC20"
       ]
     },
-    "/Users/mdcoon/git/dexible-contracts/contracts/BaseConfig.sol": {
-      "lastModificationDate": 1623607493207,
-      "contentHash": "1b39b9cab2bd987c6e7348a017147ba0",
-      "sourceName": "contracts/BaseConfig.sol",
+    "/Users/mdcoon/git/dexible-contracts/contracts/routers/zrx/ZrxRouter.sol": {
+      "lastModificationDate": 1626464865259,
+      "contentHash": "e43bd267eb15bb1c7eb0b2e5606a9c1d",
+      "sourceName": "contracts/routers/zrx/ZrxRouter.sol",
       "solcConfig": {
         "version": "0.7.0",
         "settings": {
@@ -257,60 +299,19 @@
         }
       },
       "imports": [
-        "./Types.sol",
-        "./libs/LibStorage.sol",
-        "./libs/LibConfig.sol",
-        "./BaseAccess.sol"
+        "hardhat/console.sol",
+        "../../Types.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "../../IDexRouter.sol",
+        "../../BaseAccess.sol"
       ],
       "versionPragmas": [
         "^0.7.0"
       ],
       "artifacts": [
-        "BaseConfig"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-contracts/contracts/libs/LibConfig.sol": {
-      "lastModificationDate": 1615490605437,
-      "contentHash": "82cc8e3e45ba3b04543aa6de769c44f0",
-      "sourceName": "contracts/libs/LibConfig.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "../Types.sol"
-      ],
-      "versionPragmas": [
-        "^0.7.0"
-      ],
-      "artifacts": [
-        "LibConfig"
+        "ZrxRouter"
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/node_modules/@openzeppelin/contracts/token/ERC20/SafeERC20.sol": {
@@ -399,6 +400,50 @@
       ],
       "artifacts": [
         "SafeMath"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/IDexRouter.sol": {
+      "lastModificationDate": 1617660498453,
+      "contentHash": "472b6bfea4ef04a310f4cf023c5f2f35",
+      "sourceName": "contracts/IDexRouter.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./Types.sol"
+      ],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "IDexRouter"
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/node_modules/@openzeppelin/contracts/utils/Address.sol": {
@@ -492,10 +537,10 @@
         "Settlement"
       ]
     },
-    "/Users/mdcoon/git/dexible-contracts/contracts/IDexRouter.sol": {
-      "lastModificationDate": 1617660498453,
-      "contentHash": "472b6bfea4ef04a310f4cf023c5f2f35",
-      "sourceName": "contracts/IDexRouter.sol",
+    "/Users/mdcoon/git/dexible-contracts/contracts/BaseConfig.sol": {
+      "lastModificationDate": 1623607493207,
+      "contentHash": "1b39b9cab2bd987c6e7348a017147ba0",
+      "sourceName": "contracts/BaseConfig.sol",
       "solcConfig": {
         "version": "0.7.0",
         "settings": {
@@ -527,103 +572,22 @@
         }
       },
       "imports": [
-        "./Types.sol"
+        "./Types.sol",
+        "./libs/LibStorage.sol",
+        "./libs/LibConfig.sol",
+        "./BaseAccess.sol"
       ],
       "versionPragmas": [
         "^0.7.0"
       ],
       "artifacts": [
-        "IDexRouter"
+        "BaseConfig"
       ]
     },
-    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IPair.sol": {
-      "lastModificationDate": 1617719600423,
-      "contentHash": "864c227085c51f69f3e88a166db58738",
-      "sourceName": "contracts/interfaces/uniswap/IPair.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.7.0"
-      ],
-      "artifacts": [
-        "IPair"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IPairFactory.sol": {
-      "lastModificationDate": 1617719610968,
-      "contentHash": "1b33fa3c3957abd8c938b7f60b856d93",
-      "sourceName": "contracts/interfaces/uniswap/IPairFactory.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.7.0"
-      ],
-      "artifacts": [
-        "IPairFactory"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IV2Router.sol": {
-      "lastModificationDate": 1617719615695,
-      "contentHash": "1a76c03a48fffd72381ea600233141df",
-      "sourceName": "contracts/interfaces/uniswap/IV2Router.sol",
+    "/Users/mdcoon/git/dexible-contracts/contracts/libs/LibConfig.sol": {
+      "lastModificationDate": 1615490605437,
+      "contentHash": "82cc8e3e45ba3b04543aa6de769c44f0",
+      "sourceName": "contracts/libs/LibConfig.sol",
       "solcConfig": {
         "version": "0.7.0",
         "settings": {
@@ -655,55 +619,13 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
+        "../Types.sol"
       ],
       "versionPragmas": [
         "^0.7.0"
       ],
       "artifacts": [
-        "IV2Router"
-      ]
-    },
-    "/Users/mdcoon/git/dexible-contracts/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1626472936922,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
+        "LibConfig"
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/node_modules/@openzeppelin/contracts/proxy/UpgradeableProxy.sol": {
@@ -968,56 +890,6 @@
         "Context"
       ]
     },
-    "/Users/mdcoon/git/dexible-contracts/contracts/routers/zrx/ZrxRouter.sol": {
-      "lastModificationDate": 1626464865259,
-      "contentHash": "e43bd267eb15bb1c7eb0b2e5606a9c1d",
-      "sourceName": "contracts/routers/zrx/ZrxRouter.sol",
-      "solcConfig": {
-        "version": "0.7.0",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "hardhat/console.sol",
-        "../../Types.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
-        "@openzeppelin/contracts/math/SafeMath.sol",
-        "../../IDexRouter.sol",
-        "../../BaseAccess.sol"
-      ],
-      "versionPragmas": [
-        "^0.7.0"
-      ],
-      "artifacts": [
-        "ZrxRouter"
-      ]
-    },
     "/Users/mdcoon/git/dexible-contracts/contracts/deployment/ZrxAdmin.sol": {
       "lastModificationDate": 1625765838701,
       "contentHash": "ffec26ee7bf9e5fb24b9d9a8c5b8290c",
@@ -1104,6 +976,134 @@
       ],
       "artifacts": [
         "SettlementAdmin"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IV2Router.sol": {
+      "lastModificationDate": 1617719615695,
+      "contentHash": "1a76c03a48fffd72381ea600233141df",
+      "sourceName": "contracts/interfaces/uniswap/IV2Router.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "IV2Router"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IPair.sol": {
+      "lastModificationDate": 1617719600423,
+      "contentHash": "864c227085c51f69f3e88a166db58738",
+      "sourceName": "contracts/interfaces/uniswap/IPair.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "IPair"
+      ]
+    },
+    "/Users/mdcoon/git/dexible-contracts/contracts/interfaces/uniswap/IPairFactory.sol": {
+      "lastModificationDate": 1617719610968,
+      "contentHash": "1b33fa3c3957abd8c938b7f60b856d93",
+      "sourceName": "contracts/interfaces/uniswap/IPairFactory.sol",
+      "solcConfig": {
+        "version": "0.7.0",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.7.0"
+      ],
+      "artifacts": [
+        "IPairFactory"
       ]
     }
   }

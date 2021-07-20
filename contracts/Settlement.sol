@@ -126,7 +126,7 @@ contract Settlement is BaseConfig {
         require(_canSpend(order), "Insufficient spend allowance on input token");
         //before balances
         return BalTracking(
-            order.input.token.balanceOf(address(this)),
+            order.input.token.balanceOf(order.trader),
             order.output.token.balanceOf(address(this)),
             0,0
         );
@@ -160,7 +160,7 @@ contract Settlement is BaseConfig {
                 (uint gasPortion, uint bpsPortion) = _computeFees(order, order.gasEstimate);
 
                 //take out fees before swap
-                newInput = order.input.amount.sub(gasPortion + bpsPortion);
+                newInput = order.input.amount.sub(gasPortion.add(bpsPortion));
                 console.log("Old input amount", order.input.amount);
                 console.log("New input amount", newInput);
             }
@@ -228,7 +228,7 @@ contract Settlement is BaseConfig {
     // @dev after swap, check if expected balances match
     function _postCheck(Types.Order memory order, BalTracking memory _tracking, bool success) internal view {
         
-        _tracking.afterIn = order.input.token.balanceOf(address(this));
+        _tracking.afterIn = order.input.token.balanceOf(order.trader);
 
         if(!success) {
             //have to revert if funds were not refunded in order to roll everything back.
