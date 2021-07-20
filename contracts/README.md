@@ -49,8 +49,8 @@ Configuration settings for the core Settlement contract is done through a librar
 | `copy`                 | Just copies all the config settings in memory                                                                                                                                                                                                                                                                                                                                                            |
 | `get/setDevTeam`    | Retrieves or sets the dev team address. The dev team address is where the fee portion of payments are sent after each fill.                                                                                                                                                                                                                                                                              |
 | `get/setLockoutBlocks` | Retrieves or sets the number of blocks a trader must wait before withdrawing their gas deposit. This is to prevent traders from front-running a relay that submitted an order in order to circumvent paying for the execution or forcing a failed txn.                                                                                                                                                   |
-| `get/setMinFee`        | No longer in use                                                                                                                                                                                                                                                                                                                             |
-| `get/setPenaltyFee`    | Retrieves/sets a trader penalty fee. A penalty fee was originally intended to penalize traders that attempted to front-run the Dexible relays by removing spend allowance or token balances from their wallets prior to a trade being settled. Currently, the penalty fee is set to 0; but we may install a penalty fee later if we find the relays are losing money due to bad actors in the ecosystem. |
+| `get/setMinFee`        | The BPS fee applied to fee token of an order                                                                                                                                                                                                                                                                                                                            |
+| `get/setPenaltyFee`    | no longer used. Kept in place for future use. |
 
 
 <br/>
@@ -109,12 +109,12 @@ This contract extends BaseAccess and controls access to configuration settings f
 | `getConfig`        | Retrieves current config settings                                                                                   |
 | `getDevTeam`       | Readonly function to get the dev team wallet address                                                                |
 | `getLockoutBlocks` | Readonly function to get the minimum number of wait blocks before trader can withdraw funds getMinFee               |
-| `getMinFee`        | No longer in use                |
+| `getMinFee`        | Get BPS fee to apply per order                |
 | `getPenaltyFee`    | Get the trader penalty fee (currently 0). This is not currently in use but is here for future iteration if needed.  |
 | `setConfig`        | Set all settings in bulk. Only admins can call this function.                                                       |
 | `setDevTeam`       | Sets the dev team address. Only admins can call this function.                                                      |
 | `setLockoutBlocks` | Set the min wait blocks. Only admins can call this function.                                                        |
-| `setMinFee`        | No longer in use                                          |
+| `setMinFee`        | Set the BPS fee to apply to feeToken of order                                          |
 | `setPenaltyFee`    | Set the trader penalty fee. Only admins can call this function.                                                     |
 
 <br/>
@@ -153,12 +153,14 @@ This is the primary function to settle fill requests through Dexible. It can onl
 
 * Verify the trader has sufficient funds to trade (input token)
 * Verify the trader has given the Settlement contract sufficient approval to spend input tokens
-* Transfer input tokens to a specified IDexRouter address
+* Transfer input tokens to a specified IDexRouter address (minus estimated fees if input token is the order fee token)
 * Delegate token swapping to the specified IDexRouter
 * Verify that post-trade output token balances satisfied the trader's expectation
 * Reimburse the relay wallet (caller) with sufficient funds to pay the txn fee
+* Extract fees from output if feeToken is output token
+* Transfer input-token fees if the feeToken is input token
 
-The fill function relies on a trycatch mechanism to catch problems that may occur due to slippage and still allows the txn to succeed so that relays are reimbursed regardless of trade outcome. Certain conditions, however, should be charged back to Dexible since the relay should have checked those conditions prior to sending the txn on-chain (token balance and spend allowance). The fill relies on an IDEXRouter implementation, and currently the only one in use is ZrxRouter. This relies on the 0x Dex Aggregator to fulfill token swaps and extract an appropriate fee from the output token.
+The fill function relies on a trycatch mechanism to catch problems that may occur due to slippage and still allows the txn to succeed so that relays are reimbursed regardless of trade outcome. Certain conditions, however, should be charged back to Dexible since the relay should have checked those conditions prior to sending the txn on-chain (token balance and spend allowance). The fill relies on an IDEXRouter implementation, and currently the only one in use is ZrxRouter. This relies on the 0x Dex Aggregator to fulfill token swaps and extract an appropriate fee from the output token. Note that if the fee token is the output token, and the swap fails, no fee is given and the Dexible relays incur the full cost of the txn.
 
 <br/>
 
@@ -193,4 +195,4 @@ One way to prevent this is to ensure that all order details are signed at the ti
 | `performFill`  | Internal call to wrap the router fill call in a trycatch so that we can properly handle swap failures. Note that we deduct a certain amount of gas out of the call to allow for post-call processing (reimbursements, events, etc)                                                                                                                                                                                                                                                                                                                 |
 | `_trySwap`     | The actual call to the IDexRouter to swap tokens. This will revert if the swap fails on the IDexRouter side.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `_postCheck`   | Internal function to check token balances after a swap completes. If the swap failed, we have to make sure funds were given back to the trader. If it succeeded, we have to make sure the output token balance satisfied the order requirements and that input token balance changed appropriately as well.                                                                                                                                                                                                                                                        |
-| `_postActions` | Internal function to perform post-fill updates. Regardless of swap outcome, it must reimburse the relay and pay the Dexible fee from the contract's ETH balance.                                                                                                                                                                                                                                                                                                                             |v
+| `_postActions` | Internal function to perform post-fill updates. Regardless of swap outcome, it must reimburse the relay and pay the Dexible fee from the fee token of the order.                                                                                                                                                                                                                                                                                                                             |v
