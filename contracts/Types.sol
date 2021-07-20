@@ -28,7 +28,7 @@ library Types {
         //the token we are taking as fee
         IERC20 feeToken;
 
-        //eth price of fee token in whole units
+        //eth price of fee token in whole ETH units
         uint feeTokenETHPrice;
 
         //an estimate of gas to use to fill the order
