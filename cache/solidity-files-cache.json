@@ -489,8 +489,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Settlement.sol": {
-      "lastModificationDate": 1626616795891,
-      "contentHash": "be6477c54cc0e7a0d1ef32c4eee74d33",
+      "lastModificationDate": 1626703672690,
+      "contentHash": "f2f9218e26ffeb1482931f044404d303",
       "sourceName": "contracts/Settlement.sol",
       "solcConfig": {
         "version": "0.7.0",

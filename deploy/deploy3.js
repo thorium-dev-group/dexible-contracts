@@ -3,12 +3,11 @@ const ethers = require("ethers");
 const GASPRICE = ethers.utils.parseUnits("35", 9);
 
 const deployZrx = async props => {
-    /*
+    
     if(await alreadyDeployed("ZrxRouter", props)) {
         console.log("ZrxRouterwapDex already deployed at", props.ZrxRouter.address);
         return props;
     }
-    */
 
     console.log("Deploying ZrxRouter...");
     let libraries = {};
