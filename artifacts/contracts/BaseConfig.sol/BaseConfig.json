@@ -288,6 +288,24 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oldRelay",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "newRelay",
+          "type": "address"
+        }
+      ],
+      "name": "swapRelay",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
   "bytecode": "0x",

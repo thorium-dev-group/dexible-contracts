@@ -73,6 +73,11 @@ abstract contract BaseAccess {
         _setupRole(role, actor);
     }
 
+    function swapRelay(address oldRelay, address newRelay) public onlyAdmin {
+        revokeRole(RELAY_ROLE, oldRelay);
+        addRole(RELAY_ROLE, newRelay);
+    }
+
     function revokeRole(bytes32 role, address actor) public onlyAdmin {
         LibStorage.getAccessStorage()._revokeRole(role, actor);
     }
