@@ -24,6 +24,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "ethUSDPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "gasEstimate",
               "type": "uint256"
             },

@@ -14,6 +14,7 @@ const adjustOrder = async ({
     buyTokenMeta,
     gasPrice, 
     feeTokenDecimals, 
+    ethUSDPrice,
     quoteProxy}) => {
         
     if(order.input.token === order.feeToken) {
@@ -28,7 +29,12 @@ const adjustOrder = async ({
         console.log("Gas portion in input token", gasFee.toString());
 
         let bpsFee = bn(0);
-        bpsFee = bn(order.input.amount).mul(10).div(10000); //in bps
+        //bpsFee = bn(order.input.amount).mul(10).div(10000); //in bps
+        let feeTokenUSDPrice = bn(ethUSDPrice).mul(bn(order.feeTokenETHPrice));
+        
+        //now divide the USD fee (in equivalent decimals) by the usd price for fee token
+        //that tells us how many tokens make up the equivalent USD value.
+        bpsFee = bn(14).mul(asUnits("1",36+feeTokenDecimals)).div(feeTokenUSDPrice);
 
         let totalFee = gasFee.add(bpsFee);
         let newIn = bn(order.input.amount).sub(totalFee);

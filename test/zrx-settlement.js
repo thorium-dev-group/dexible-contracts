@@ -77,7 +77,8 @@ describe("ZrxSettlement", function() {
                 sellToken: TOKEN_IN,
                 buyToken: TOKEN_OUT,
                 sellAmount: IN_AMOUNT.toString(),
-                chainId: NETWORK
+                chainId: NETWORK,
+                slippage: .005
             });
 
             let feeETHPrice = null;
@@ -86,7 +87,8 @@ describe("ZrxSettlement", function() {
                     sellToken: WETH_TOKEN,
                     buyToken: FEE_TOKEN,
                     sellAmount: ethers.utils.parseEther("1").toString(),
-                    chainId: NETWORK
+                    chainId: NETWORK,
+                    slippage: .005
                 });
                 feeETHPrice.price = 1/feeETHPrice.price;
             } else {
@@ -118,6 +120,7 @@ describe("ZrxSettlement", function() {
                 traderAddress: TRADER,
                 feeToken: FEE_TOKEN,
                 feeTokenETHPrice: ethers.utils.parseEther(feeETHPrice.price.toFixed(18)),
+                ethUSDPrice: ethers.utils.parseEther("2800"),
                 gasEstimate: ethers.BigNumber.from(450000),
                 tokenA: {
                     address: TOKEN_IN,
@@ -134,6 +137,7 @@ describe("ZrxSettlement", function() {
                 order, 
                 gasPrice: maxGas, 
                 feeTokenDecimals: FEE_TOKEN_DECS, 
+                ethUSDPrice: ethers.utils.parseEther("2800"),
                 sellTokenMeta: {
                     address: TOKEN_IN,
                     decimals: TOKEN_IN_DECS

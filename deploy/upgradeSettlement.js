@@ -14,7 +14,10 @@ const deploySettlement = async props => {
          libraries
      });
      let r = await impl.receipt;
-     console.log("Settlement impl gas used", r.gasUsed.toString());
+     if(r) {
+        console.log("Settlement impl gas used", r.gasUsed.toString());
+     }
+     
      console.log("Deployed new Settlement at", impl.address);
      return impl;   
      

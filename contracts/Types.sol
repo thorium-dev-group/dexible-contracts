@@ -31,6 +31,9 @@ library Types {
         //eth price of fee token in 18-decimal units
         uint feeTokenETHPrice;
 
+        //current price of ETH in USD units
+        uint ethUSDPrice;
+
         //an estimate of gas to use to fill the order
         uint gasEstimate;
 

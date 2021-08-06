@@ -47,7 +47,7 @@ contract Settlement is BaseConfig {
                        uint outputAmount,
                        IERC20 feeToken,
                        uint gasFee,
-                       uint bpsFee);
+                       uint dexibleFee);
     event ReceivedETH(address indexed sender, uint amount);
     event WithdrewETH(address indexed receiver, uint amount);
     event PaidGasFunds(address indexed relay, uint amount);
@@ -134,19 +134,25 @@ contract Settlement is BaseConfig {
 
     
     // @dev compute the gas and BPS fee for an order
-    function _computeFees(Types.Order memory order, uint gasUsed) internal view returns (uint gasFee, uint bpsFee) {
+    function _computeFees(Types.Order memory order, uint gasUsed) internal view returns (uint gasFee, uint dexibleFee) {
         console.log("---- Computing Fees -----");
         uint estGasCost = tx.gasprice * gasUsed;
         console.log("Estimated gas cost", estGasCost);
         uint decs = IERC20Metadata(address(order.feeToken)).decimals();
         gasFee = (estGasCost.mul(10**decs)).div(order.feeTokenETHPrice);
         console.log("Gas portion in fee token", gasFee);
-        if(order.feeToken == order.input.token) {
-            bpsFee = (order.input.amount.mul(LibStorage.getConfigStorage().minFee)).div(10000); //in bps
-        } else {
-            bpsFee = (order.output.amount.mul(LibStorage.getConfigStorage().minFee)).div(10000);
-        }
-        console.log("BPS fee", bpsFee); 
+
+        //all pricing comes in as 18-decimal points. We need to maintain that level 
+        //of granularity when computing USD price for fee token. This results in 
+        //36-decimal point number
+        uint feeTokenUSDPrice = order.ethUSDPrice.mul(order.feeTokenETHPrice);
+        console.log("Fee token price in USD", feeTokenUSDPrice);
+        
+        //now divide the USD fee (in equivalent fee-token decimals) by the usd price for fee token
+        //that tells us how many tokens make up the equivalent USD value.
+        dexibleFee = LibStorage.getConfigStorage().minFee.mul(10**(36+decs)).div(feeTokenUSDPrice);
+
+        console.log("Dexible fee", dexibleFee); 
         console.log("---- End compute fees ----");   
     }
 
@@ -157,10 +163,10 @@ contract Settlement is BaseConfig {
             uint newInput = 0;
             {
                 //compute gas and bps fees
-                (uint gasPortion, uint bpsPortion) = _computeFees(order, order.gasEstimate);
+                (uint gasPortion, uint feePortion) = _computeFees(order, order.gasEstimate);
 
                 //take out fees before swap
-                newInput = order.input.amount.sub(gasPortion.add(bpsPortion));
+                newInput = order.input.amount.sub(gasPortion.add(feePortion));
                 console.log("Old input amount", order.input.amount);
                 console.log("New input amount", newInput);
             }
@@ -170,6 +176,7 @@ contract Settlement is BaseConfig {
                 feeToken: order.feeToken,
                 feeTokenETHPrice: order.feeTokenETHPrice,
                 gasEstimate: order.gasEstimate,
+                ethUSDPrice: order.ethUSDPrice,
                 input: Types.TokenAmount({
                     token: order.input.token,
                     amount: uint112(newInput)
@@ -265,7 +272,7 @@ contract Settlement is BaseConfig {
         console.log("Gas fee", gasFee);
 
         //compute post-swap fees again now that we have a better idea of actual gas usage
-        (uint gasInFeeToken, uint bpsFee) = _computeFees(order, totalGasUsed);
+        (uint gasInFeeToken, uint dexibleFee) = _computeFees(order, totalGasUsed);
         
         //if there is ETH in the contract, reimburse the relay that called the fill function
         if(address(this).balance < gasFee) {
@@ -297,7 +304,7 @@ contract Settlement is BaseConfig {
             
         } else {
             //on success, the gas and bps fee are paid to the dev team
-            fees = gasInFeeToken.add(bpsFee);
+            fees = gasInFeeToken.add(dexibleFee);
 
             //gross is delta between starting/ending balance before/after swap
             uint grossOut = _tracking.afterOut.sub(_tracking.beforeOut);
@@ -329,7 +336,7 @@ contract Settlement is BaseConfig {
                         toTrader, 
                         order.feeToken,
                         gasInFeeToken,
-                        bpsFee); 
+                        dexibleFee); 
             console.log("Finished swap");
         }
     }

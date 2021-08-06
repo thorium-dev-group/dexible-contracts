@@ -6,6 +6,7 @@ const setupOrder = (props) => {
         feeToken: props.feeToken,
         feeTokenETHPrice: props.feeTokenETHPrice,
         gasEstimate: props.gasEstimate,
+        ethUSDPrice: props.ethUSDPrice,
         input: {
             token: props.tokenA.address,
             amount: props.tokenA.amount
