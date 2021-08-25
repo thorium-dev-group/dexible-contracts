@@ -34,10 +34,13 @@ We enable smart DeFi automation, provide detailed pre-trade and post-trade analy
 **How we do it.** <br/>
 We created a robust infrastructure, programmatic API, trade settlement logic, execution parameters, and an intuitive app frontend.
 
+**Contract Audit**
+All of our contracts have been audited by Solidified. See <a href="https://github.com/buidlhub/dexible-contracts/Audit Report - Dexible [16 August 2021].pdf" target="_blank">Audit Report </a>
+
 <br/>
 <hr/>
 
-Dexible is the go-to execution engine for professionals trading across DEXes. We automate swaps with private and non-custodial large cap trades and orders in illiquid markets to ensure the best effective rate. 
+<a href="https://dexible.io" target="_blank">Dexible</a> is the go-to execution engine for professionals trading across DEXes. We automate swaps with private and non-custodial large cap trades and orders in illiquid markets to ensure the best effective rate. 
 
 The algos we've developed optimize your orders to minimize slippage and human error. Dexible automatically monitors the markets and then executes transactions in tranches until orders are filled or canceled. 
 
