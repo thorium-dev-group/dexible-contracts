@@ -16,6 +16,10 @@ Smart contract repo
     <a href="mailto:support@dexible.io"><strong>Email the team»</strong></a>
     <br />
     <br />
+    <a href="https://dexible.io">Webpage</a>
+    ·
+    <a href="https://app.gitbook.com/@dexible/s/dexible/">Docs</a>
+    ·
     <a href="https://t.me/dexible">Message us on Telegram</a>
     ·
     <a href="https://discord.gg/Xvnh3Ektkc">Message us on Discord</a>
