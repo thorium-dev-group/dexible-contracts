@@ -37,6 +37,8 @@ We created a robust infrastructure, programmatic API, trade settlement logic, ex
 **Contract Audit**
 All of our contracts have been audited by Solidified. See <a href="https://github.com/BUIDLHub/dexible-contracts/blob/master/Audit%20Report%20-%20Dexible%20%5B16%20August%202021%5D.pdf" target="_blank">Audit Report </a>
 
+While the audit revealed no major or critical issues with the contracts, there were a few medium-level issues found. The biggest issue was the fact that Dexible could manipulate gas and ETH prices to inflate reimbursements for txn costs. While it is possible for us to do that, it would be easily discovered and have a negative impact on usage. All ETH-USD prices are derived from Coingecko and are updated every 10 minutes. Token ETH prices are calculated as part of our market spot price evaluation, which today happens every 5 seconds.
+
 <br/>
 <hr/>
 
