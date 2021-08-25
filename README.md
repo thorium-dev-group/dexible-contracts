@@ -35,7 +35,7 @@ We enable smart DeFi automation, provide detailed pre-trade and post-trade analy
 We created a robust infrastructure, programmatic API, trade settlement logic, execution parameters, and an intuitive app frontend.
 
 **Contract Audit**
-All of our contracts have been audited by Solidified. See <a href="https://github.com/buidlhub/dexible-contracts/Audit Report - Dexible [16 August 2021].pdf" target="_blank">Audit Report </a>
+All of our contracts have been audited by Solidified. See <a href="https://github.com/BUIDLHub/dexible-contracts/blob/master/Audit%20Report%20-%20Dexible%20%5B16%20August%202021%5D.pdf" target="_blank">Audit Report </a>
 
 <br/>
 <hr/>
