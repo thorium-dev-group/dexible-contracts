@@ -92,6 +92,16 @@ const deploySettlement = async props => {
 }
 
 
+const deployFeeCalculator = async props => {
+    const Con = await props.ethers.getContractFactory("FeeCalculator");
+    console.log("Deploying fee calculator...");
+    const impl = await Con.deploy();
+    let r = await impl.deployTransaction.wait();
+    console.log("To deploy fee calc", r.gasUsed.toString());
+    props.feeCalculator = new props.ethers.Contract(impl.address, impl.interface, props.owner);
+    return props;
+}
+
 const buildConfig = props => {
     let ethers = props.ethers;
     let minFee = props.minFee || 14;
@@ -113,6 +123,7 @@ module.exports = {
     deployAccess,
     deployConfig,
     //deployGas,
+    deployFeeCalculator,
     deploySettlement,
     setupSettlement
 }

@@ -44,16 +44,16 @@ const adjustOrder = async ({
         let minOut = asDec(newIn, sellTokenMeta.decimals)*q.guaranteedPrice;  
         let buyAmt = asUnits(minOut.toFixed(buyTokenMeta.decimals), buyTokenMeta.decimals);
         console.log("Quote buy amount", q.buyAmount.toString(), "actual buy", buyAmt.toString());
-
+        console.log("New quote input", q.data);
         return {
             order: {
                 ...order,
                 output: {
                     ...order.output,
-                    amount: bn(buyAmt)
+                    amount: bn(q.buyAmount)
                 }
             },
-            dexInput: q.dexInput
+            dexInput: q.data || q.dexInput
         }
     }
     return {

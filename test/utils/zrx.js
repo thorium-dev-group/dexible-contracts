@@ -5,6 +5,38 @@ const endpoints = {
     42: "https://kovan.api.0x.org/swap/v1/quote?"
 }
 
+const localEstimate = async function(props) {
+    let url = process.env.SOR_API;
+    if(!url) {
+        throw new Error("No SOR_API in env");
+    }
+    console.log("Chain", props.chainId);
+    let params = {
+        sell: {
+            address: props.sellToken,
+            amount: props.sellAmount
+        },
+        buy: {
+            address: props.buyToken
+        },
+        chainID: props.chainId,
+        slippage: props.slippage,
+        order_size: {
+            min: props.minInput,
+            samples: 25
+        },
+        maxFixedGas: props.maxFixedGas,
+        fixedPrice: props.fixedPrice
+    }
+
+    let r = await axios({
+        method: "POST",
+        url,
+        data: params
+    });
+    console.log("ZrxResult", r.data);
+    return r.data.bestQuote;
+}
 
 const estimate = async function(props) {
 
@@ -68,5 +100,6 @@ const toQueryStr = obj => {
 
 
 module.exports = {
-    estimate
+    estimate,
+    localEstimate
 }

@@ -18,6 +18,18 @@ const setupOrder = (props) => {
     };
 }
 
+const setupFeeData = props => {
+    return {
+        feeToken: props.feeToken,
+        gasEstimate: props.gasEstimate,
+        ethUSDPrice: props.ethUSDPrice,
+        feeTokenETHPrice: props.feeTokenETHPrice,
+        gasPrice: props.gasPrice,
+        feeAmountUSD: props.feeAmountUSD
+    }
+}
+
 module.exports = {
-    setupOrder
+    setupOrder,
+    setupFeeData
 }

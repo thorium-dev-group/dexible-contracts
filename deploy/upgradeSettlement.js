@@ -1,7 +1,7 @@
 
 
 const deploySettlement = async props => {
-    
+    /*
      console.log("Deploying new Settlement version...");
      let libraries = {};
      let all = await props.deployments.all();
@@ -20,6 +20,7 @@ const deploySettlement = async props => {
      
      console.log("Deployed new Settlement at", impl.address);
      return impl;   
+     */
      
  }
  

@@ -3,7 +3,7 @@ const { expect, assert} = require("chai");
 const {accounts, settlement, zrx} = require("./utils/setup");
 const {approveRelay} = require("./utils/accounts");
 const {setupOrder} = require("./utils/order");
-const {estimate}  = require("./utils/zrx");
+const {estimate, localEstimate}  = require("./utils/zrx");
 const {balanceOf} = require("./utils/erc20");
 const erc20ABI = require("./abi/ERC20ABI.json");
 const {adjustOrder} = require("./utils/CostEstimator");
@@ -14,9 +14,11 @@ const DAI_MAIN = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const USDC_MAIN = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
 const IFUND_MAIN = "0x04b5e13000c6e9a3255dc057091f3e3eeee7b0f0";
 const UNI_MAIN = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
+const LDO_MAIN = "0x5a98fcbea516cf06857215779fd812ca3bef1b32";
 
 const MATIC_WHALE = "0xa1B9ae88E04429E1c2A41eaE264aEc5d88914810";
 const USDC_WHALE = "0x7E0188b0312A26ffE64B7e43a7a91d430fB20673";
+const WETH_WHALE = "0x725a1fe791b9081492442518596a2E9e4dc4711b";
 
 const USDC_KOVAN = "0x2F375e94FC336Cdec2Dc0cCB5277FE59CBf1cAe5";
 const DAI_KOVAN =  "0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa";
@@ -27,17 +29,19 @@ const USDC_KOVAN_WHALE = "0x6058233f589DBE86f38BC64E1a77Cf16cf3c6c7e";
 const UNI_WHALE = "0x41653c7d61609D856f29355E404F310Ec4142Cfb";
 const KOVAN_CALLER = "0xBf341c95C52181D4eCa6cf10c3f17316FD262E39";
 
-const TOKEN_IN = USDC_MAIN;
-const TOKEN_OUT = UNI_MAIN;
-const TRADER = USDC_WHALE;
+const TOKEN_IN = WETH_MAIN;
+const TOKEN_OUT = LDO_MAIN;
+const TRADER = WETH_WHALE;
 const FEE_TOKEN = TOKEN_IN;
-const TOKEN_IN_DECS = 6;
+const TOKEN_IN_DECS = 18;
 const TOKEN_OUT_DECS = 18;
-const FEE_TOKEN_DECS = 6;
-const IN_AMOUNT = ethers.utils.parseUnits("720", FEE_TOKEN_DECS);
+const FEE_TOKEN_DECS = 18;
+const IN_AMOUNT = ethers.utils.parseUnits("2", FEE_TOKEN_DECS);
 const NETWORK = 1;
 const WETH_TOKEN = WETH_MAIN;
 const bn = ethers.BigNumber.from;
+const GAS_PRICE = ethers.utils.parseUnits("71", 9);
+//const ETH_USD = ethers.utils.parseEther("3912.92");
 
 describe("ZrxSettlement", function() {
     this.timeout(30000);
@@ -73,22 +77,32 @@ describe("ZrxSettlement", function() {
         before(async function() {
             console.log("======= BEFORE TEST =========");
 
-            let res = await estimate({
+            let res = await localEstimate({
+                maxFixedGas: GAS_PRICE.toString(),
                 sellToken: TOKEN_IN,
                 buyToken: TOKEN_OUT,
                 sellAmount: IN_AMOUNT.toString(),
                 chainId: NETWORK,
-                slippage: .005
+                slippage: .005,
+                minInput: bn(1).toString(),
+                fixedPrice: 833.3333333
             });
+
+            if(res.bestQuote) {
+                res = res.bestQuote;
+            }
 
             let feeETHPrice = null;
             if(FEE_TOKEN !== WETH_TOKEN) {
-                feeETHPrice = await estimate( {
-                    sellToken: WETH_TOKEN,
+                feeETHPrice = await localEstimate( {
+                    maxFixedGas: GAS_PRICE.toString(),
+                    sellToken:TOKEN_IN,
                     buyToken: FEE_TOKEN,
                     sellAmount: ethers.utils.parseEther("1").toString(),
                     chainId: NETWORK,
-                    slippage: .005
+                    slippage: .005,
+                    minInput: bn(1).toString(),
+                    fixedPrice: 833.333333
                 });
                 feeETHPrice.price = 1/feeETHPrice.price;
             } else {
@@ -113,15 +127,15 @@ describe("ZrxSettlement", function() {
             console.log("Original quote output", res.buyAmount.toString());
 
             console.log("Expected gas", res.estimatedGas);
-            maxGas = ethers.utils.parseUnits("30", 9);
+            maxGas = GAS_PRICE;
             whale = await ethers.provider.getSigner(TRADER);
             console.log("Whale ETH balance", await ethers.provider.getBalance(TRADER));
             order = setupOrder({
                 traderAddress: TRADER,
                 feeToken: FEE_TOKEN,
                 feeTokenETHPrice: ethers.utils.parseEther(feeETHPrice.price.toFixed(18)),
-                ethUSDPrice: ethers.utils.parseEther("2800"),
-                gasEstimate: ethers.BigNumber.from(450000),
+                ethUSDPrice: bn(res.ethUSDPrice),
+                gasEstimate: ethers.BigNumber.from(600000),
                 tokenA: {
                     address: TOKEN_IN,
                     amount: ethers.BigNumber.from(res.sellAmount)
@@ -137,7 +151,7 @@ describe("ZrxSettlement", function() {
                 order, 
                 gasPrice: maxGas, 
                 feeTokenDecimals: FEE_TOKEN_DECS, 
-                ethUSDPrice: ethers.utils.parseEther("2800"),
+                ethUSDPrice: bn(res.ethUSDPrice), //ETH_USD,//ethers.utils.parseEther("3919.92"),
                 sellTokenMeta: {
                     address: TOKEN_IN,
                     decimals: TOKEN_IN_DECS
@@ -148,12 +162,15 @@ describe("ZrxSettlement", function() {
                 },
                 quoteProxy: {
                     newQuote: newIn => {
-                        return estimate( {
+                        return localEstimate( {
                             slippage: .005,
                             chainId: NETWORK,
                             sellToken: TOKEN_IN,
                             buyToken: TOKEN_OUT,
-                            sellAmount: newIn
+                            sellAmount: newIn.toString(),
+                            minInput: bn(1).toString(),
+                            fixedPrice: 833.33333333,
+                            maxFixedGas:GAS_PRICE.toString(),
                         })
                     }
                 }
@@ -162,7 +179,7 @@ describe("ZrxSettlement", function() {
             console.log("New order", order);
             let abi = ethers.utils.defaultAbiCoder;
             console.log("Allowance target", res.allowanceTarget);
-            encodedCallData = abi.encode(["address","address", "bytes"], [res.dexAddress,res.allowanceTarget,newDexInput||res.dexInput]);
+            encodedCallData = abi.encode(["address","address", "bytes"], [res.dexAddress||res.to,res.allowanceTarget,newDexInput||res.dexInput]);
             console.log("========= END BEFORE TEST ==========");
         });
 
@@ -199,7 +216,7 @@ describe("ZrxSettlement", function() {
             let beforeBal = await feeErc20.balanceOf(props.ownerAddress);
             let txn = await props.settlementContract.connect(props.relay).fill(order, props.zrxScript.address, encodedCallData, {
                 gasPrice: gp,
-                gasLimit: bn(600000)
+                gasLimit: bn(800000)
             });
             await expect(txn).to.emit(props.settlementContract, "SwapSuccess");
             await expect(txn).to.emit(props.settlementContract, "PaidGasFunds");
@@ -211,7 +228,7 @@ describe("ZrxSettlement", function() {
             console.log("Fees", afterBal.sub(beforeBal).toString());
         });
 
-        
+        /*
         it("Should handle slippage failures", async function(){
             await approveSpend();
             await fundGas();
@@ -236,7 +253,7 @@ describe("ZrxSettlement", function() {
                 expect(sBal).to.eq(eBal);
             }
         });
-        
+        */
 
     });
     

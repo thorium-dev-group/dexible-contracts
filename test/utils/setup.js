@@ -22,6 +22,12 @@ const settlement = async function(props) {
     return props;
 }
 
+const feeCalculator = async function(props) {
+    console.log("Deploying Fee Calculator");
+    props = await deploy.deployFeeCalculator(props);
+    return props;
+}
+
 const uniswap = async function(props) {
     console.log("----- Deploying Uniswap Router ----");
     const Con = await ethers.getContractFactory("UniswapDex", {
@@ -108,5 +114,6 @@ module.exports = {
     settlement,
     uniswap,
     sushiswap,
-    zrx
+    zrx,
+    feeCalculator
 }

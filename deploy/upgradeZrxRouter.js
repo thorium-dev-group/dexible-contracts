@@ -1,7 +1,7 @@
 
 
 const deployZrxRouter = async props => {
-   
+   /*
     console.log("Deploying new ZrxRouter version...");
     let libraries = {};
     let all = await props.deployments.all();
@@ -19,6 +19,7 @@ const deployZrxRouter = async props => {
     console.log("ZrxRouter deployed at block", r.blockNumber, "with hash", r.transactionHash, "status", r.status, "from address", r.from, " using", r.gasUsed.toString(), "gas");
     console.log("Deployed new ZrxRouter at", impl.address);
     return impl; 
+    */
      
 }
 
