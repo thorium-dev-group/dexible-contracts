@@ -121,12 +121,12 @@ contract Settlement is BaseConfig {
 
     // @dev make sure trader has token balance and allowance to cover order
     function _preCheck(Types.Order memory order) internal view returns (BalTracking memory) {
-        //require(_hasFunds(order, tx.gasprice), "Insufficient gas tank funds");
-        require(_hasTokens(order), "Insufficient input token balance to trade");
+        uint bal = order.input.token.balanceOf(order.trader);
+        require(bal >= order.input.amount,"Insufficient input token balance to trade");
         require(_canSpend(order), "Insufficient spend allowance on input token");
         //before balances
         return BalTracking(
-            order.input.token.balanceOf(order.trader),
+            bal,
             order.output.token.balanceOf(address(this)),
             0,0
         );

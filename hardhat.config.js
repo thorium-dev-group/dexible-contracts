@@ -74,5 +74,13 @@ module.exports = {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,
       accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
     },
+    polygon: {
+      gas: 80000000000,
+      gasPrice: 15000000000,
+      allowUnlimitedContractSize: true,
+      timeout: 6000000,
+      url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    }
   }
 };

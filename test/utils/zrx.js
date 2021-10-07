@@ -1,16 +1,22 @@
 const axios = require('axios');
+const { ethers } = require('ethers');
 
 const endpoints = {
     1: "https://api.0x.org/swap/v1/quote?",
     42: "https://kovan.api.0x.org/swap/v1/quote?"
 }
 
+
+const bn = ethers.BigNumber.from;
+
 const localEstimate = async function(props) {
+    
     let url = process.env.SOR_API;
     if(!url) {
         throw new Error("No SOR_API in env");
     }
     console.log("Chain", props.chainId);
+    
     let params = {
         sell: {
             address: props.sellToken,

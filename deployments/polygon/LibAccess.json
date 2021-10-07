@@ -1,0 +1,55 @@
+{
+  "address": "0x76D3d679a6d7b4a490139bd0AFc99CbB952fb522",
+  "abi": [],
+  "transactionHash": "0x1e71c3b611956430bec2c3d8fbc894b334e47c446de846340f99e2b624ec3b89",
+  "receipt": {
+    "to": null,
+    "from": "0xb631E8650fB4bEfDAe74Ab9f86a9Cb65bC134706",
+    "contractAddress": "0x76D3d679a6d7b4a490139bd0AFc99CbB952fb522",
+    "transactionIndex": 18,
+    "gasUsed": "101293",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000800000000000000000000100000000000000000000000002000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000010000000000000000000200000000000000000000000000020000000000000000000000000000008004000000000000000000001000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000080000040000100000",
+    "blockHash": "0xdaa4f2a5949b9d9fa1eec698f38fd0fe1dc9c9f5f45948bf76ca23b551e427bd",
+    "transactionHash": "0x1e71c3b611956430bec2c3d8fbc894b334e47c446de846340f99e2b624ec3b89",
+    "logs": [
+      {
+        "transactionIndex": 18,
+        "blockNumber": 19649584,
+        "transactionHash": "0x1e71c3b611956430bec2c3d8fbc894b334e47c446de846340f99e2b624ec3b89",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x000000000000000000000000b631e8650fb4befdae74ab9f86a9cb65bc134706",
+          "0x000000000000000000000000b79fad4ca981472442f53d16365fdf0305ffd8e9"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000565e1b73f9e000000000000000000000000000000000000000000000000073315b345cec1d2a80000000000000000000000000000000000000000000054641c1bbf7c5496976700000000000000000000000000000000000000000000000733104d64178234a80000000000000000000000000000000000000000000054641c21255e0bd63567",
+        "logIndex": 83,
+        "blockHash": "0xdaa4f2a5949b9d9fa1eec698f38fd0fe1dc9c9f5f45948bf76ca23b551e427bd"
+      }
+    ],
+    "blockNumber": 19649584,
+    "cumulativeGasUsed": "2522437",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "c89cd327bd7036b37a825b6b92475bde",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.0+commit.9e61f92b\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/libs/LibAccess.sol\":\"LibAccess\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity >=0.6.0 <0.8.0;\\n\\n/**\\n * @dev Interface of the ERC20 standard as defined in the EIP.\\n */\\ninterface IERC20 {\\n    /**\\n     * @dev Returns the amount of tokens in existence.\\n     */\\n    function totalSupply() external view returns (uint256);\\n\\n    /**\\n     * @dev Returns the amount of tokens owned by `account`.\\n     */\\n    function balanceOf(address account) external view returns (uint256);\\n\\n    /**\\n     * @dev Moves `amount` tokens from the caller's account to `recipient`.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transfer(address recipient, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Returns the remaining number of tokens that `spender` will be\\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\\n     * zero by default.\\n     *\\n     * This value changes when {approve} or {transferFrom} are called.\\n     */\\n    function allowance(address owner, address spender) external view returns (uint256);\\n\\n    /**\\n     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\\n     * that someone may use both the old and the new allowance by unfortunate\\n     * transaction ordering. One possible solution to mitigate this race\\n     * condition is to first reduce the spender's allowance to 0 and set the\\n     * desired value afterwards:\\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\\n     *\\n     * Emits an {Approval} event.\\n     */\\n    function approve(address spender, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Moves `amount` tokens from `sender` to `recipient` using the\\n     * allowance mechanism. `amount` is then deducted from the caller's\\n     * allowance.\\n     *\\n     * Returns a boolean value indicating whether the operation succeeded.\\n     *\\n     * Emits a {Transfer} event.\\n     */\\n    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);\\n\\n    /**\\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\\n     * another (`to`).\\n     *\\n     * Note that `value` may be zero.\\n     */\\n    event Transfer(address indexed from, address indexed to, uint256 value);\\n\\n    /**\\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\\n     * a call to {approve}. `value` is the new allowance.\\n     */\\n    event Approval(address indexed owner, address indexed spender, uint256 value);\\n}\\n\",\"keccak256\":\"0x5f02220344881ce43204ae4a6281145a67bc52c2bb1290a791857df3d19d78f5\",\"license\":\"MIT\"},\"contracts/Types.sol\":{\"content\":\"//SPDX-License-Identifier: Unlicense\\npragma solidity ^0.7.0;\\npragma experimental ABIEncoderV2;\\n\\nimport \\\"@openzeppelin/contracts/token/ERC20/IERC20.sol\\\";\\n\\nlibrary Types {\\n\\n    struct TokenAmount {\\n        IERC20 token;\\n        uint112 amount;\\n    }\\n\\n    //status of order. Only tracked on action from user/miners\\n    enum OrderStatus {\\n        UNDEFINED,\\n        PENDING,\\n        FILLED,\\n        CANCELLED,\\n        PENALIZED\\n    }\\n\\n    struct Order {\\n\\n        //trader that owns the order\\n        address trader;\\n\\n        //the token we are taking as fee\\n        IERC20 feeToken;\\n\\n        //eth price of fee token in 18-decimal units\\n        uint feeTokenETHPrice;\\n\\n        //current price of ETH in USD units\\n        uint ethUSDPrice;\\n\\n        //an estimate of gas to use to fill the order\\n        uint gasEstimate;\\n\\n        //token being offered\\n        TokenAmount input;\\n\\n        //token wanted\\n        TokenAmount output;\\n    }\\n\\n    //============== CONFIG STATE =============/\\n    struct Config {\\n        //dev team address (120b)\\n        address devTeam;\\n\\n        //bps fee expressed as a whole number\\n        uint128 minFee;\\n\\n        //penalty a user faces for removing assets or \\n        //allowances before a trade\\n        uint128 penaltyFee;\\n\\n        //number of blocks to lock stake and order cancellations\\n        uint8 lockoutBlocks;\\n    }\\n\\n    //============== ACCESS STATE =============/\\n    //storage structure of access controls\\n    struct AccessControl {\\n        bool reentrantFlag;\\n        mapping(bytes32 => mapping(address => bool)) roles;\\n    }\\n\\n    //============== INITIALIZATION STATE =============/\\n    struct InitControls {\\n        bool initialized;\\n        bool initializing;\\n    }\\n}\\n\",\"keccak256\":\"0x3c8069a1a9ed04c31a67496bdceaeab96382a87df0fa14ee928acacabe13baf2\",\"license\":\"Unlicense\"},\"contracts/libs/LibAccess.sol\":{\"content\":\"//SPDX-License-Identifier: Unlicense\\npragma solidity ^0.7.0;\\n\\nimport \\\"../Types.sol\\\";\\n\\n\\nlibrary LibAccess {\\n    \\n    function hasRole(Types.AccessControl storage ac, bytes32 role, address actor) external view returns (bool) {\\n        return ac.roles[role][actor];\\n    }\\n\\n    function _addRole(Types.AccessControl storage ac, bytes32 role, address actor) internal  {\\n        ac.roles[role][actor] = true;\\n    }\\n\\n    function _revokeRole(Types.AccessControl storage ac, bytes32 role, address actor) internal  {\\n        delete ac.roles[role][actor];\\n    }\\n}\",\"keccak256\":\"0x30f51b897619d1a661871173b3572497bf68a4e5d7faaf20ebfffe4137c13984\",\"license\":\"Unlicense\"}},\"version\":1}",
+  "bytecode": "0x60de610025600b82828239805160001a60731461001857fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063f40931b0146038575b600080fd5b606760048036036060811015604c57600080fd5b50803590602081013590604001356001600160a01b0316607b565b604080519115158252519081900360200190f35b6000918252600192909201602090815260408083206001600160a01b039094168352929052205460ff169056fea26469706673582212206b47dc7afc19e7c237c9f719501e4a232317055e64149f7c467aaff4849ead2c64736f6c63430007000033",
+  "deployedBytecode": "0x730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063f40931b0146038575b600080fd5b606760048036036060811015604c57600080fd5b50803590602081013590604001356001600160a01b0316607b565b604080519115158252519081900360200190f35b6000918252600192909201602090815260408083206001600160a01b039094168352929052205460ff169056fea26469706673582212206b47dc7afc19e7c237c9f719501e4a232317055e64149f7c467aaff4849ead2c64736f6c63430007000033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
