@@ -25,6 +25,10 @@ interface IERC20Metadata {
     function decimals() external view returns (uint8);
 }
 
+interface WNative is IERC20 {
+    function withdraw(uint wad) external; 
+}
+
 contract Settlement is BaseConfig {
 
     using SafeMath for uint256;
@@ -58,7 +62,7 @@ contract Settlement is BaseConfig {
     uint256 constant OP_GAS = 40_000;
 
     //for final transfers and events
-    uint256 constant GAS_OVERHEAD = 50_000;
+    uint256 constant GAS_OVERHEAD = 60_000;
 
     struct BalTracking {
         uint256 beforeIn;
@@ -76,7 +80,10 @@ contract Settlement is BaseConfig {
      */
     function fill(Types.Order memory order, IDexRouter router, bytes calldata data) public onlyRelay nonReentrant {
 
-        uint256 startGas = gasleft();
+        //the starting gas isn't actually the starting gas since a significant amount has 
+        //already been burned loading the contract and libs
+        uint256 startGas = gasleft().add(40_000);
+
         //pre-trade condition checks
         BalTracking memory _tracker = _preCheck(order);
 
@@ -100,6 +107,17 @@ contract Settlement is BaseConfig {
         require(amount <= address(this).balance, "Insufficient balance to make transfer");
         _msgSender().transfer(amount);
         emit WithdrewETH(_msgSender(), amount);
+    }
+
+    /**
+     * Team's ability to deposit native token into this contract using wrapped 
+     * native asset allowance
+     */
+    function depositWNative(WNative native, uint amount) public {
+        uint spend = native.allowance(_msgSender(), address(this));
+        require(spend >= amount, "Insufficient spend allowance");
+        native.transferFrom(_msgSender(), address(this), amount);
+        native.withdraw(amount);
     }
 
     // @dev initialize the settlement contract 
@@ -145,6 +163,8 @@ contract Settlement is BaseConfig {
         //all pricing comes in as 18-decimal points. We need to maintain that level 
         //of granularity when computing USD price for fee token. This results in 
         //36-decimal point number
+        console.log("Order native USD price", order.ethUSDPrice);
+        console.log("Order fee token native price", order.feeTokenETHPrice);
         uint feeTokenUSDPrice = order.ethUSDPrice.mul(order.feeTokenETHPrice);
         console.log("Fee token price in USD", feeTokenUSDPrice);
         
@@ -217,19 +237,37 @@ contract Settlement is BaseConfig {
     // @dev perform any pre-swap actions, like transferring tokens to router
     function _preActions(Types.Order memory order, IDexRouter router) internal {
         //transfer input tokens to router so it can perform dex trades
-        console.log("Transfering to router:", order.input.amount);
-        order.input.token.safeTransferFrom(order.trader, address(router), order.input.amount);
+        console.log("Transfering input for trading:", order.input.amount);
+        order.input.token.safeTransferFrom(order.trader, address(this), order.input.amount); //address(router), order.input.amount);
     }
 
     // @dev try making the swap through router.
     function _trySwap(Types.Order calldata order, IDexRouter router, bytes calldata data) external returns (bool success, string memory failReason) {
         require(msg.sender == address(this), "Can only be called by settlement contract");
         _preActions(order, router);
-        (bool s, string memory err) = router.fill(order, data);
+
+        //call data contains the target address and data to pass to it to execute
+        (address swapTarget, address allowanceTarget, bytes memory data) = abi.decode(data, (address,address,bytes));
+      
+
+        console.log("Approving spend for target", allowanceTarget);
+
+        //for protocols that require zero-first approvals
+        require(order.input.token.approve(allowanceTarget, 0));
+
+        //make sure 0x target has approval to spend this contract's tokens
+        require(order.input.token.approve(allowanceTarget, order.input.amount));
+
+        console.log("Calling swapTarget", swapTarget);
+
+        (bool s,bytes memory returnData) = swapTarget.call{gas: gasleft()}(data);
+        console.logBytes(returnData);
+
+        //(bool s, string memory err) = router.fill(order, data);
         if(!s) {
-            revert(err);
+            revert("Failed to swap");
         }
-        return (s, err);
+        return (s, "");
     }
 
     // @dev after swap, check if expected balances match
@@ -251,6 +289,7 @@ contract Settlement is BaseConfig {
 
             console.log("Output token balance before swap", _tracking.beforeOut);
             console.log("Output balance after swap", _tracking.afterOut);
+            console.log("Expected output amount", order.output.amount);
             require(_tracking.afterOut.sub(_tracking.beforeOut) >= order.output.amount, "Trade action did not transfer output tokens to trader");
             require(_tracking.beforeIn.sub(_tracking.afterIn) <= order.input.amount, "Used too many input tokens");
         }

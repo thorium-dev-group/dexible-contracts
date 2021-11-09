@@ -489,8 +489,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Settlement.sol": {
-      "lastModificationDate": 1633563814749,
-      "contentHash": "8a62f86ee4f1fc7b33759e8ffaa80893",
+      "lastModificationDate": 1635093294444,
+      "contentHash": "9b41a6f5ad5b2c689b5b99d88a8df83a",
       "sourceName": "contracts/Settlement.sol",
       "solcConfig": {
         "version": "0.7.0",
@@ -534,7 +534,8 @@
       ],
       "artifacts": [
         "IERC20Metadata",
-        "Settlement"
+        "Settlement",
+        "WNative"
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/BaseConfig.sol": {

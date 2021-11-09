@@ -39,10 +39,12 @@ module.exports = {
       //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
+      chainId: 1,
       forking: {
         url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
       }
     },
+    
     rinkeby: {
       gas: 10000000000,
       allowUnlimitedContractSize: true,
@@ -68,7 +70,7 @@ module.exports = {
     },
     mainnet: {
       gas: 80000000000,
-      gasPrice: 258000000000,
+      gasPrice: 158000000000,
       allowUnlimitedContractSize: true,
       timeout: 600000,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,
@@ -76,10 +78,16 @@ module.exports = {
     },
     polygon: {
       gas: 80000000000,
-      gasPrice: 15000000000,
+      gasPrice: 75000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
       url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    },
+    avalanche: {
+      url: 'https://api.avax.network/ext/bc/C/rpc',
+      gasPrice: 25000000000,
+      chainId: 43114,
       accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
     }
   }

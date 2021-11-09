@@ -1,9 +1,11 @@
 
 const setupAccounts = async (props) => {
     let accounts = await ethers.getSigners();
+
     
     let owner = accounts[0];
     let ownerAddress = await owner.getAddress();
+    
     let trader = accounts[1];
     let traderAddress = await trader.getAddress();
     let proxyAdmin = accounts[3];
@@ -12,6 +14,7 @@ const setupAccounts = async (props) => {
     let relayAddress = await relay.getAddress();
     let relay2 = accounts[5];
     let relay2Address = await relay2.getAddress();
+    
     
     const AD = await ethers.getContractFactory("ProxyAdmin", proxyAdmin);
     let proxyAdminContract = await AD.deploy();

@@ -33,6 +33,7 @@ module.exports = async ({getUnnamedAccounts, deployments}) => {
         libraries[k] = dep.address;
     });
 
+    /*
     let diff = await deployments.fetchIfDifferent("ZrxRouter", {
         libraries
     });
@@ -41,6 +42,7 @@ module.exports = async ({getUnnamedAccounts, deployments}) => {
         console.log("No differences in ZrxRouter, skipping upgrade");
         return;
     }
+    */
 
     let impl = await deployZrxRouter({
         owner,

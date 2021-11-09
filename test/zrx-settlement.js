@@ -16,6 +16,7 @@ const IFUND_MAIN = "0x04b5e13000c6e9a3255dc057091f3e3eeee7b0f0";
 const UNI_MAIN = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
 const LDO_MAIN = "0x5a98fcbea516cf06857215779fd812ca3bef1b32";
 const BADGER_MAIN = "0x3472a5a71965499acd81997a54bba8d852c6e53d";
+const WBTC_MAIN = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599";
 
 const MATIC_WHALE = "0xa1B9ae88E04429E1c2A41eaE264aEc5d88914810";
 const USDC_WHALE = "0x7E0188b0312A26ffE64B7e43a7a91d430fB20673";
@@ -30,19 +31,24 @@ const USDC_KOVAN_WHALE = "0x6058233f589DBE86f38BC64E1a77Cf16cf3c6c7e";
 const UNI_WHALE = "0x41653c7d61609D856f29355E404F310Ec4142Cfb";
 const KOVAN_CALLER = "0xBf341c95C52181D4eCa6cf10c3f17316FD262E39";
 
-const TOKEN_IN = WETH_MAIN;
-const TOKEN_OUT = BADGER_MAIN;
-const TRADER = WETH_WHALE;
+const POLY_MATIC = "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270";
+const POLY_WBTC = "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6";
+const POLY_WETH = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
+
+const POLY_MATIC_WHALE = "0x2ee05Fad3b206a232E985acBda949B215C67F00e"
+
+const TOKEN_IN = POLY_MATIC
+const TOKEN_OUT = POLY_WBTC
+const TRADER = POLY_MATIC_WHALE;
 const FEE_TOKEN = TOKEN_IN;
 const TOKEN_IN_DECS = 18;
-const TOKEN_OUT_DECS = 18;
+const TOKEN_OUT_DECS = 8;
 const FEE_TOKEN_DECS = 18;
-const IN_AMOUNT = ethers.utils.parseUnits("17", FEE_TOKEN_DECS);
-const NETWORK = 1;
-const WETH_TOKEN = WETH_MAIN;
+const IN_AMOUNT = ethers.utils.parseUnits("120", TOKEN_IN_DECS);
+const NETWORK = 137;
+const WETH_TOKEN = POLY_WETH;
 const bn = ethers.BigNumber.from;
-const GAS_PRICE = ethers.utils.parseUnits("71", 9);
-//const ETH_USD = ethers.utils.parseEther("3912.92");
+const GAS_PRICE = ethers.utils.parseUnits("100", 9);
 
 describe("ZrxSettlement", function() {
     this.timeout(30000);
@@ -86,24 +92,24 @@ describe("ZrxSettlement", function() {
                 chainId: NETWORK,
                 slippage: .005,
                 minInput: bn(1).toString(),
-                fixedPrice: 833.3333333
             });
 
             if(res.bestQuote) {
                 res = res.bestQuote;
             }
 
+            props.quote = res;
+            /*
             let feeETHPrice = null;
             if(FEE_TOKEN !== WETH_TOKEN) {
                 feeETHPrice = await localEstimate( {
                     maxFixedGas: GAS_PRICE.toString(),
-                    sellToken:TOKEN_IN,
+                    sellToken:WETH_TOKEN,
                     buyToken: FEE_TOKEN,
                     sellAmount: ethers.utils.parseEther("1").toString(),
                     chainId: NETWORK,
                     slippage: .005,
                     minInput: bn(1).toString(),
-                    fixedPrice: 833.333333
                 });
                 feeETHPrice.price = 1/feeETHPrice.price;
             } else {
@@ -113,10 +119,15 @@ describe("ZrxSettlement", function() {
             }
 
             console.log("Fee ETH price", feeETHPrice.price);
+            */
+
+            console.log("Fee MATIC price", res.feeTokenETHPrice);
+            console.log("MATIC usd price", res.ethUSDPrice);
 
             await ethers.provider.send('hardhat_impersonateAccount', [TRADER]);
-            await ethers.provider.send("hardhat_setBalance", [TRADER, ethers.utils.parseEther("1").toHexString().replace(/0x0*/,'0x')]);
+            //await ethers.provider.send("hardhat_setBalance", [TRADER, ethers.utils.parseEther("1000000").toHexString().replace(/0x0*/,'0x')]);
             
+            console.log("Network", await ethers.provider.getNetwork());
             let inBal = await inputBalance({
                 provider: ethers.provider,
                 trader: TRADER,
@@ -131,56 +142,30 @@ describe("ZrxSettlement", function() {
             maxGas = GAS_PRICE;
             whale = await ethers.provider.getSigner(TRADER);
             console.log("Whale ETH balance", await ethers.provider.getBalance(TRADER));
+            console.log("feeTokenETHPrice", res.feeTokenETHPrice);
+            const minBuyAmount = bn(res.minGrossOutput);
+            console.log("Min buy", minBuyAmount.toString());
+
             order = setupOrder({
                 traderAddress: TRADER,
-                feeToken: FEE_TOKEN,
-                feeTokenETHPrice: ethers.utils.parseEther(feeETHPrice.price.toFixed(18)),
+                feeToken: res.feeToken.address,
+                feeTokenETHPrice: bn(res.feeTokenETHPrice),
                 ethUSDPrice: bn(res.ethUSDPrice),
-                gasEstimate: ethers.BigNumber.from(600000),
+                gasEstimate: bn(res.adjustedGasEstimate),
                 tokenA: {
                     address: TOKEN_IN,
-                    amount: ethers.BigNumber.from(res.sellAmount)
+                    amount: bn(res.sellAmount)
                 },
                 tokenB: {
                     address: TOKEN_OUT,
-                    amount: ethers.BigNumber.from(res.buyAmount)
+                    amount: minBuyAmount
                 }
             });
-            console.log("Old order", order);
-
-            let {order:newOrder, dexInput:newDexInput} = await adjustOrder({
-                order, 
-                gasPrice: maxGas, 
-                feeTokenDecimals: FEE_TOKEN_DECS, 
-                ethUSDPrice: bn(res.ethUSDPrice), //ETH_USD,//ethers.utils.parseEther("3919.92"),
-                sellTokenMeta: {
-                    address: TOKEN_IN,
-                    decimals: TOKEN_IN_DECS
-                },
-                buyTokenMeta: {
-                    address: TOKEN_OUT,
-                    decimals: TOKEN_OUT_DECS
-                },
-                quoteProxy: {
-                    newQuote: newIn => {
-                        return localEstimate( {
-                            slippage: .005,
-                            chainId: NETWORK,
-                            sellToken: TOKEN_IN,
-                            buyToken: TOKEN_OUT,
-                            sellAmount: newIn.toString(),
-                            minInput: bn(1).toString(),
-                            fixedPrice: 833.33333333,
-                            maxFixedGas:GAS_PRICE.toString(),
-                        })
-                    }
-                }
-            });
-            order = newOrder;
-            console.log("New order", order);
+           
+            console.log("Order", order);
             let abi = ethers.utils.defaultAbiCoder;
             console.log("Allowance target", res.allowanceTarget);
-            encodedCallData = abi.encode(["address","address", "bytes"], [res.dexAddress||res.to,res.allowanceTarget,newDexInput||res.dexInput]);
+            encodedCallData = abi.encode(["address","address", "bytes"], [res.dexAddress||res.to,res.allowanceTarget,res.data]);
             console.log("========= END BEFORE TEST ==========");
         });
 
@@ -213,7 +198,7 @@ describe("ZrxSettlement", function() {
             let gp = maxGas; //.mul();
 
             console.log("Using GP", gp.toString(), "compared to", maxGas.toString());
-            let feeErc20 = new ethers.Contract(FEE_TOKEN, erc20ABI, ethers.provider);
+            let feeErc20 = new ethers.Contract(props.quote.feeToken.address, erc20ABI, ethers.provider);
             let beforeBal = await feeErc20.balanceOf(props.ownerAddress);
             let txn = await props.settlementContract.connect(props.relay).fill(order, props.zrxScript.address, encodedCallData, {
                 gasPrice: gp,
@@ -229,7 +214,7 @@ describe("ZrxSettlement", function() {
             console.log("Fees", afterBal.sub(beforeBal).toString());
         });
 
-        /*
+        
         it("Should handle slippage failures", async function(){
             await approveSpend();
             await fundGas();
@@ -238,13 +223,17 @@ describe("ZrxSettlement", function() {
             console.log("Starting balance", sBal.toString());
 
             //simulate price increase by expecting more output than actually produced
-            order.output.amount = ethers.utils.parseEther("1000");
+            order.output.amount = ethers.utils.parseUnits("1000", TOKEN_OUT_DECS);
             let gp = maxGas.mul(2);
             console.log("Using GP", gp.toString(), "compared to", maxGas.toString());
             
-            await expect(props.settlementContract.connect(props.relay).fill(order, props.zrxScript.address, encodedCallData, {
-                gasPrice: gp
-            })).to.emit(props.settlementContract, "SwapFailed");
+            let txn = await props.settlementContract.connect(props.relay).fill(order, props.zrxScript.address, encodedCallData, {
+                gasPrice: gp,
+                gasLimit: bn(800000)
+            });
+
+            const r = await txn.wait();
+            expect(txn).to.emit(props.settlementContract, "SwapFailed");
             let eBal = await balanceOf({owner: TRADER, token: TOKEN_IN});
             if(order.feeToken === order.input.token) {
                 //if fee is paid in input, it should have deducted fee
@@ -253,8 +242,9 @@ describe("ZrxSettlement", function() {
                 //otherwise it should be the same
                 expect(sBal).to.eq(eBal);
             }
+
+            console.log("Gas used", r.gasUsed.toString(), "total gas fee", r.gasUsed.mul(gp).toString());
         });
-        */
 
     });
     
