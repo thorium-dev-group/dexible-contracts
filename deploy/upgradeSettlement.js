@@ -55,11 +55,11 @@ const deploySettlement = async props => {
             {from: proxyOwner},
             "upgrade",
             //ROPSTEN:
-            //"0x18b534C7D9261C2af0D65418309BA2ABfc4b682d",
+            "0x18b534C7D9261C2af0D65418309BA2ABfc4b682d",
             //KOVAN:
             //"0x147bFD9cEffcd58A2B2594932963F52B16d528b1",
             //MAINNET:
-            "0xad84693a21E0a1dB73ae6c6e5aceb041A6C8B6b3",
+            //"0xad84693a21E0a1dB73ae6c6e5aceb041A6C8B6b3",
             //POLY:
             //"0x683927eb874937a7b0b7c76fb7ef4ad226d08785",
             impl.address);

@@ -137,7 +137,7 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Types.sol": {
-      "lastModificationDate": 1628722006568,
+      "lastModificationDate": 1637099029828,
       "contentHash": "e8d16d75a5239cc7d2c9ef418c5977a2",
       "sourceName": "contracts/Types.sol",
       "solcConfig": {
@@ -489,8 +489,8 @@
       ]
     },
     "/Users/mdcoon/git/dexible-contracts/contracts/Settlement.sol": {
-      "lastModificationDate": 1635093294444,
-      "contentHash": "9b41a6f5ad5b2c689b5b99d88a8df83a",
+      "lastModificationDate": 1637101162111,
+      "contentHash": "2741e952fc2c84ccf6c19010441dc4d7",
       "sourceName": "contracts/Settlement.sol",
       "solcConfig": {
         "version": "0.7.0",

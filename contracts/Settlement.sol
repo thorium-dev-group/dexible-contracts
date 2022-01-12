@@ -275,11 +275,11 @@ contract Settlement is BaseConfig {
         
         _tracking.afterIn = order.input.token.balanceOf(order.trader);
 
+        console.log("Expected output amount", order.output.amount);
         if(!success) {
             //have to revert if funds were not refunded in order to roll everything back.
             //in this case, the router is at fault, which is Dexible's fault and therefore 
             //Dexible relay address should eat the cost of failure
-            console.log("Input bal b4", _tracking.beforeIn);
             console.log("Input bal after", _tracking.afterIn);
             require(_tracking.afterIn == _tracking.beforeIn, "failed trade action did not refund input funds");
         } else {
