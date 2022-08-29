@@ -6,6 +6,42 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 library Types {
 
+
+    struct V3Fees {
+        //token to take fees with
+        IERC20 feeToken;
+
+        //affiliate to pay portion of fees to
+        address affiliate;
+
+        //portion of fees that goes to affiliate
+        uint affiliatePortion;
+
+        //the current eth price of the fee token. Only used if 
+        //txn fails to compute gas fee
+        uint feeTokenETHPrice;
+
+        //amount of fee token to take as the dexible fee
+        uint dexibleFee;
+
+        //pre-determined gas fee for the txn
+        uint gasFee;
+    }
+
+    struct V3Order {
+        //trader that owns the order
+        address trader;
+
+        //token being offered
+        TokenAmount input;
+
+        //token wanted
+        TokenAmount output;
+
+        //fee information
+        V3Fees fees;
+    }
+
     struct TokenAmount {
         IERC20 token;
         uint112 amount;

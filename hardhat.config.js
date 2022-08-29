@@ -35,13 +35,21 @@ module.exports = {
   },
   networks: {
     hardhat: {
+      //mining: {
+      //  auto: false,
+      //  interval: 100
+      //},
       //gas: 30000000000,
       //gasLimit: 600000,
       allowUnlimitedContractSize: true,
       timeout: 1800000,
       chainId: 1,
+      //chainId: 137,
+      //chainId: 3,
       forking: {
+        //url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
         url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
+        //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`, 
       }
     },
     
@@ -62,7 +70,7 @@ module.exports = {
     },
     ropsten: {
       gas: 10000000000,
-      gasPrice: 5000000000,
+      gasPrice: 10000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
@@ -88,6 +96,18 @@ module.exports = {
       url: 'https://api.avax.network/ext/bc/C/rpc',
       gasPrice: 25000000000,
       chainId: 43114,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    },
+    bsc: {
+      url: "https://bsc-dataseed1.ninicoin.io",
+      gasPrice: 5000000000,
+      chainId: 56,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    },
+    fantom: {
+      url: "https://rpc.ftm.tools",
+      gasPrice: 1130000000000,
+      chainId: 250,
       accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
     }
   }
