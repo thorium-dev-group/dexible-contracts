@@ -8,7 +8,7 @@ const {balanceOf} = require("./utils/erc20");
 const erc20ABI = require("./abi/ERC20ABI.json");
 const {adjustOrder} = require("./utils/CostEstimator");
 
-const MATIC = "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0";
+const MATIC_MAIN = "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0";
 const WETH_MAIN = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const DAI_MAIN = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 const USDC_MAIN = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
@@ -18,7 +18,7 @@ const LDO_MAIN = "0x5a98fcbea516cf06857215779fd812ca3bef1b32";
 const BADGER_MAIN = "0x3472a5a71965499acd81997a54bba8d852c6e53d";
 const WBTC_MAIN = "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599";
 
-const MATIC_WHALE = "0xa1B9ae88E04429E1c2A41eaE264aEc5d88914810";
+const MATIC_WHALE = "0xC131701Ea649AFc0BfCc085dc13304Dc0153dc2e";
 const USDC_WHALE = "0x7E0188b0312A26ffE64B7e43a7a91d430fB20673";
 const WETH_WHALE = "0x725a1fe791b9081492442518596a2E9e4dc4711b";
 
@@ -37,16 +37,16 @@ const POLY_WETH = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
 
 const POLY_MATIC_WHALE = "0x2ee05Fad3b206a232E985acBda949B215C67F00e"
 
-const TOKEN_IN = POLY_MATIC
-const TOKEN_OUT = POLY_WBTC
-const TRADER = POLY_MATIC_WHALE;
+const TOKEN_IN = MATIC_MAIN;
+const TOKEN_OUT = WBTC_MAIN;
+const TRADER = MATIC_WHALE;
 const FEE_TOKEN = TOKEN_IN;
 const TOKEN_IN_DECS = 18;
 const TOKEN_OUT_DECS = 8;
 const FEE_TOKEN_DECS = 18;
-const IN_AMOUNT = ethers.utils.parseUnits("120", TOKEN_IN_DECS);
-const NETWORK = 137;
-const WETH_TOKEN = POLY_WETH;
+const IN_AMOUNT = ethers.utils.parseUnits("1200", TOKEN_IN_DECS);
+const NETWORK = 1;
+const WETH_TOKEN = WETH_MAIN;
 const bn = ethers.BigNumber.from;
 const GAS_PRICE = ethers.utils.parseUnits("100", 9);
 
@@ -99,28 +99,8 @@ describe("ZrxSettlement", function() {
             }
 
             props.quote = res;
-            /*
-            let feeETHPrice = null;
-            if(FEE_TOKEN !== WETH_TOKEN) {
-                feeETHPrice = await localEstimate( {
-                    maxFixedGas: GAS_PRICE.toString(),
-                    sellToken:WETH_TOKEN,
-                    buyToken: FEE_TOKEN,
-                    sellAmount: ethers.utils.parseEther("1").toString(),
-                    chainId: NETWORK,
-                    slippage: .005,
-                    minInput: bn(1).toString(),
-                });
-                feeETHPrice.price = 1/feeETHPrice.price;
-            } else {
-                feeETHPrice = {
-                    price: 1
-                }
-            }
-
-            console.log("Fee ETH price", feeETHPrice.price);
-            */
-
+            const fees = res.fees;
+           
             console.log("Fee MATIC price", res.feeTokenETHPrice);
             console.log("MATIC usd price", res.ethUSDPrice);
 
@@ -143,7 +123,7 @@ describe("ZrxSettlement", function() {
             whale = await ethers.provider.getSigner(TRADER);
             console.log("Whale ETH balance", await ethers.provider.getBalance(TRADER));
             console.log("feeTokenETHPrice", res.feeTokenETHPrice);
-            const minBuyAmount = bn(res.minGrossOutput);
+            const minBuyAmount = bn(res.buyAmountAfterFees); //minGrossOutput);
             console.log("Min buy", minBuyAmount.toString());
 
             order = setupOrder({

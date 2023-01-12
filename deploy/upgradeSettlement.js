@@ -20,7 +20,6 @@ const deploySettlement = async props => {
      
      console.log("Deployed new Settlement at", impl.address);
      return impl;  
-     
  }
  
  module.exports = async ({getUnnamedAccounts, deployments}) => {
@@ -50,7 +49,7 @@ const deploySettlement = async props => {
          deploy: deployments.deploy 
      });
      if(impl) {
-        console.log("Upgrading settlement...");
+            console.log("Upgrading settlement contract...");
             await deployments.execute("ProxyAdmin", 
             {from: proxyOwner},
             "upgrade",
@@ -63,9 +62,15 @@ const deploySettlement = async props => {
             //POLY:
             //"0x683927eb874937a7b0b7c76fb7ef4ad226d08785",
             //FANTOM:
-            "0x35c63f433155dc0f4cd7f7e3f83764967c00fe0a",
+            //"0x46181db60480f137bbd6633b624cc0a7af2cfc76",
             //BSC:
-            //"0x683927eb874937a7b0b7c76fb7ef4ad226d08785"
+            //"0x683927eb874937a7b0b7c76fb7ef4ad226d08785",
+            //AVAX:
+            //"0x46181db60480f137bbd6633b624cc0a7af2cfc76",
+            //ARBITRUM:
+            //"0x3c2918430dbFc84960F554377d9D1248ab1977F0",
+            //OPTIMISM:
+            "0x6fee44c705aa554120bb91a9157392eedd95372c",
             impl.address);
          
      }

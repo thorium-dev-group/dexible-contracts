@@ -18,21 +18,31 @@ const localEstimate = async function(props) {
     console.log("Chain", props.chainId);
     
     let params = {
-        sell: {
-            address: props.sellToken,
-            amount: props.sellAmount
+        quote: {
+            sell: {
+                chainId: props.chainId,
+                address: props.sellToken,
+                amount: props.sellAmount
+            },
+            buy: {
+                chainId: props.chainId,
+                address: props.buyToken
+            },
+            //chainID: props.chainId,
+            slippagePercentage: props.slippage,
+            order_size: {
+                min: props.minInput,
+                samples: 25
+            },
+            fee: {
+                feeType: 'relative',
+                providerFee: .08
+            },
+            estimatedGasUsage: 700_000,
+            gasPriceGwei: 25
         },
-        buy: {
-            address: props.buyToken
-        },
-        chainID: props.chainId,
-        slippage: props.slippage,
-        order_size: {
-            min: props.minInput,
-            samples: 25
-        },
-        maxFixedGas: props.maxFixedGas,
-        fixedPrice: props.fixedPrice
+        //maxFixedGas: props.maxFixedGas,
+        //fixedPrice: props.fixedPrice
     }
 
     let r = await axios({
@@ -41,7 +51,7 @@ const localEstimate = async function(props) {
         data: params
     });
     console.log("ZrxResult", r.data);
-    return r.data.bestQuote;
+    return r.data.bestQuote || r.data.best;
 }
 
 const estimate = async function(props) {

@@ -44,9 +44,12 @@ module.exports = {
       allowUnlimitedContractSize: true,
       timeout: 1800000,
       chainId: 1,
+      //chainId: 43114,
       //chainId: 137,
       //chainId: 3,
       forking: {
+        //url: 'https://api.avax.network/ext/bc/C/rpc',
+        //blockNumber: 19871939
         //url: `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`,
         url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`
         //url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`, 
@@ -78,7 +81,7 @@ module.exports = {
     },
     mainnet: {
       gas: 80000000000,
-      gasPrice: 158000000000,
+      gasPrice: 23000000000,
       allowUnlimitedContractSize: true,
       timeout: 600000,
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_ID}`,
@@ -86,7 +89,7 @@ module.exports = {
     },
     polygon: {
       gas: 80000000000,
-      gasPrice: 75000000000,
+      gasPrice: 110000000000,
       allowUnlimitedContractSize: true,
       timeout: 6000000,
       url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
@@ -109,6 +112,26 @@ module.exports = {
       gasPrice: 1130000000000,
       chainId: 250,
       accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    },
+    goerli: {
+      url: `https://goerli.infura.io/v3/${process.env.INFURA_ID}`,
+      gasPrice: 8000000000,
+      chainId: 5,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    },
+    arbitrum: {
+      chainId: 42161,
+      url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      gasPrice: 200000000,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    
+    },
+    optimism: {
+      chainId: 10,
+      url: `https://optimism-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
+      gasPrice: 20000000,
+      accounts: [`0x${process.env.MAINNET_OWNER}`, `0x${process.env.MAINNET_PROXY_ADMIN}`]
+    
     }
   }
 };

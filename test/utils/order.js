@@ -1,3 +1,5 @@
+const { BigNumber } = require("ethers");
+const { ethers } = require("hardhat");
 
 const setupOrder = (props) => {
     
@@ -29,7 +31,46 @@ const setupFeeData = props => {
     }
 }
 
+/**
+ * 
+ * expected input: {
+ *    feeToken: string;
+ *    affiliate?: string;
+ *    affiliagePortion?: BigNumber,
+ *    feeTokenETHPrice: BigNumber (price*10^18),
+ *    dexibleFee: BigNumber,
+ *    gasFee: BigNumber,
+ *    trader: string,
+ *    input: {
+ *        address: string;
+ *        amount: BigNumber
+ *    },
+ *    output: {
+ *        address: string;
+ *        amount: BigNumber
+ *    }
+ *    
+ * }
+ */
+const setupV3Order = props => {
+    const v3Fees = {
+        feeToken: props.feeToken.address,
+        affiliate: props.affiliate || ethers.constants.AddressZero,
+        affiliatePortion: props.affiliatePortion || BigNumber.from(0),
+        feeTokenETHPrice: props.feeTokenETHPrice,
+        dexibleFee: props.dexibleFee,
+        gasFee: props.gasFee
+    }
+    return {
+        trader: props.trader,
+        input: props.input,
+        output: props.output,
+        fees: v3Fees
+    }
+}
+
 module.exports = {
     setupOrder,
-    setupFeeData
+    setupFeeData,
+    setupV3Order
 }
